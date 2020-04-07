@@ -1,0 +1,19 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    gosu (0.15.1-x64-mingw32)
+    mini_magick (4.10.1)
+    require_all (3.0.0)
+    rmagick (4.1.1)
+
+PLATFORMS
+  x64-mingw32
+
+DEPENDENCIES
+  gosu
+  mini_magick
+  require_all
+  rmagick
+
+BUNDLED WITH
+   2.1.4
