@@ -1,4 +1,4 @@
-class Animatable
+class Animator
   attr_reader :sprite, :times_per_frame, :timeable, :reverse
   attr_accessor :delta, :current_frame
 
@@ -17,7 +17,9 @@ class Animatable
     end
     sprite[current_frame]
   end
-
+  
+  private
+  
   def update_current
     if current_frame >= sprite.size - 1
         reverse ? self.delta = -1 : self.current_frame = -1

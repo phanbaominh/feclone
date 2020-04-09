@@ -1,13 +1,13 @@
 module Drawable
-  def draw(x: 0, y: 0, z: 0, x_scale: GameConstants::SCALING_FACTOR, y_scale: GameConstants::SCALING_FACTOR)
+  def draw(x_scale: GC::SCALING_FACTOR, y_scale: GC::SCALING_FACTOR)
     return if !pre_draw
-    image = animatable.get_frame if animatable?
-    image.draw(x, y, z, x_scale, y_scale)
+    image = animatable? ? animator.get_frame : sprite
+    !custom_draw? ? image.draw(*dimensioner.get_3d, x_scale, y_scale) : custom_draw(image)
     post_draw
   end
 
   def animatable?
-    !animatable.nil?
+    !animator.nil?
   end
 
   def pre_draw
@@ -16,4 +16,9 @@ module Drawable
 
   def post_draw
   end
+
+  def custom_draw?
+    false
+  end
+
 end
