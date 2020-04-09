@@ -7,9 +7,9 @@ class Main < Gosu::Window
   def initialize
     super GC::GBA_SCREEN_WIDTH * GC::SCALING_FACTOR,
           GC::GBA_SCREEN_HEIGHT * GC::SCALING_FACTOR
-    #@background = Gosu::Image.new("assets/map/test.png", retro: true)
-    @cursor = Cursor.new
+    #@background = Gosu::Image.new("assets/map/test.png", retro: true
     @map = Map.new(sprite: Gosu::Image.new("assets/map/test.png", retro: true))
+    @cursor = Cursor.new(map: map)
     #@unit = Unit.new(sprite: Gosu::Image.load_tiles("assets/character/map_sprites/eirika.png", 32, 32, retro: true))
   end
 

@@ -48,7 +48,7 @@ class Map
   def test_tiles
     4.times do |i|
         4.times do |j|
-            unit = Unit.new(sprite: Gosu::Image.load_tiles("assets/character/map_sprites/eirika.png", 32, 32, retro: true))
+            unit = Unit.new(sprite: Gosu::Image.load_tiles(GC::CHARS_PATH.join("map_sprites","eirika.png").to_s, 32, 32, retro: true))
             add_unit(4 * j, 2 * i, unit)
         end
     end

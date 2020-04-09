@@ -8,19 +8,28 @@ module Buttonable
   end
 
   def handle_button(button)
-    if Gosu.button_down? Gosu.const_get(button)
+    button_value = Gosu.const_get(button)
+    if Gosu.button_down? button_value
+      pre_press(button_value)
       send(button.downcase)
-      post_press
+      post_press(button_value)
     end
   end
-
-  def post_press
+  
+  def pre_press(button)
   end
 
+  def post_press(button)
+  end
+  
   def pre_handling
     true
   end
 
   def post_handling
+  end
+
+  def movement_button?(button)
+    button == Gosu::KB_DOWN || button == Gosu::KB_UP || button == Gosu::KB_RIGHT || button == Gosu::KB_LEFT
   end
 end

@@ -1,3 +1,4 @@
+require "pathname"
 module Incld
     def self.included(mod)
         @custom = "gay"
@@ -26,3 +27,4 @@ class Gay
 end
 s = Gay.new
 p s.defineds?
+p File.dirname(__FILE__)

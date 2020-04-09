@@ -25,13 +25,6 @@ class MapSprite
     #p have_states?
   end
   
-  
-
-  def ani_state=(value)
-    @ani_state = value
-    cur_animator.reset_frame
-  end
-
   private
   
   def setup_animators
