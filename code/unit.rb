@@ -10,4 +10,8 @@ class Unit
       sprite: sprite
     )
   end
+
+  def draw
+    map_sprite.draw
+  end
 end

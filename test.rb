@@ -4,6 +4,10 @@ module Incld
         p "haha"
         attr_accessor :custom
     end
+
+    def defineds?
+        instance_variable_defined?(:@c)
+    end
 end
 class Gay
     include Incld
@@ -17,9 +21,8 @@ class Gay
         self.b = value * 2
         @a = value
     end
+
+    
 end
 s = Gay.new
-p s.a += 2
-p s.a
-p s.b
-p s.custom
+p s.defineds?

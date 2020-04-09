@@ -19,8 +19,7 @@ class Cursor
 
   def initialize(
     dimensioner: Cursor.map_spr_dms,
-    sprite: GC::PLAYER_CURSOR_SPRITE,
-    animatable: true
+    sprite: GC::PLAYER_CURSOR_SPRITE
   )
     @dimensioner = dimensioner
     @timeable = Timeable.new(last_time: Gosu.milliseconds,
@@ -29,12 +28,11 @@ class Cursor
                 KB_UP:    true,
                 KB_RIGHT: true,
                 KB_LEFT:  true}
+    @sprite = sprite
 
-    @animator = nil
     @animator = Animator.new(sprite: sprite,
                              times_per_frame: [500, 50, 50, 50],
-                             reverse: true) if animatable
-    @sprite = sprite
+                             reverse: true)
   end
 
   ######################

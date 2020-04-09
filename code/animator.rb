@@ -18,6 +18,11 @@ class Animator
     sprite[current_frame]
   end
   
+  def reset_frame
+    current_frame = 0
+    timeable.set_current
+  end
+
   private
   
   def update_current
