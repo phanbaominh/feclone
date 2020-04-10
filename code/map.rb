@@ -30,7 +30,10 @@ class Map
   def get_unit(x,y)
     tile[x][y].unit
   end
-
+  
+  def toogle_highlight(x_src: 0, y_src: 0, movement: nil)
+    
+  end
   private
 
   def set_up_tiles

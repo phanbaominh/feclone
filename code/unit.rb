@@ -1,4 +1,5 @@
 class Unit
+  include Dimensionable
   attr_accessor :map_sprite, :name
   
   def initialize(
@@ -27,5 +28,13 @@ class Unit
 
   def to_s
     name || get_placeholder_name
+  end
+
+  def dimensioner
+    map_sprite.dimensioner
+  end
+
+  def change_ani_state(state)
+    map_sprite.ani_state = state
   end
 end
