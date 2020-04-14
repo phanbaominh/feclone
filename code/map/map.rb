@@ -1,11 +1,12 @@
 class Map
-  attr_accessor :sprite, :tiles
+  attr_accessor :terrains, :sprite, :tiles
 
   def initialize(
-      sprite: nil,
+      image_path: nil,
       tiles: nil
   )
-    @sprite = sprite
+    @terrains = TerrainDrawer.perform(Tiler.perform(get_terrain_image_path(image_path), true))
+    @sprite = Gosu::Image.new(image_path, retro: true)
     @tiles = set_up_tiles
     test_tiles
   end
@@ -41,7 +42,7 @@ class Map
     sprite.width_grid.to_i.times do |i|
         column = []
         sprite.height_grid.to_i.times do |j|
-            column << Tile.new(dimensioner: Dimensioner.new(x_grid: i, y_grid: j))
+            column << Tile.new(dimensioner: Dimensioner.new(x_grid: i, y_grid: j), terrain: terrains[j][i])
         end
         tiles << column
     end
@@ -51,9 +52,14 @@ class Map
   def test_tiles
     4.times do |i|
         4.times do |j|
-            unit = Unit.new(sprite: Gosu::Image.load_tiles(GC::CHARS_PATH.join("map_sprites","eirika.png").to_s, 32, 32, retro: true))
+            unit = Unit.new(image_path: GC::CHARS_PATH.join("map_sprites","eirika.png").to_s)
             add_unit(4 * j, 2 * i, unit)
         end
     end
+  end
+
+  def get_terrain_image_path(image_path)
+    parts = image_path.split('.')
+    parts[0] + "_terrain." + parts[1]
   end
 end

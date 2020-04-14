@@ -15,9 +15,10 @@ class MapSprite
   end
 
   def initialize(dimensioner: MapSprite.default_map_spr_dms, 
-                 sprite: nil,
+                 image_path: nil,
                  animatable: true)
-    @sprite = sprite
+    @sprite = Tiler.perform(image_path, false, 32, 32)
+    draw_wait_sprite
     @dimensioner = dimensioner
     if animatable
       setup_animators
@@ -33,16 +34,31 @@ class MapSprite
         index: 5, 
         frames_count: 3, 
         times_per_frame: [500, 50, 500],
-        delta: 5
+        delta: 5,
+        rmagick: true
       ),
       selected: build_animator(
         index: 9,
         frames_count: 3,
         times_per_frame: [500, 50, 500],
-        delta: 5
+        delta: 5,
+        rmagick: true
+      ),
+      wait: build_animator(
+        index: 20,
+        frames_count: 3,
+        times_per_frame: [500, 50, 500],
+        delta: 1,
+        rmagick: true
       )
     }
-    @ani_state = :idle
+    @ani_state = :wait
+  end
+
+  def draw_wait_sprite
+    3.times do |i|
+      self.sprite << sprite[(i+1)*5].quantize(256, Magick::GRAYColorspace)
+    end
   end
   ####################
   #DRAWABLE INTERFACE#

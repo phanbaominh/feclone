@@ -1,4 +1,4 @@
-require_relative 'tiler'
+require_rel 'services'
 module GC
   SCALING_FACTOR = 3
   GRID_SIZE      = 16 * SCALING_FACTOR

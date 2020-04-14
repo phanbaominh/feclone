@@ -1,5 +1,5 @@
-require_rel 'drawable'
-require_rel 'dimensionable'
+require_rel '../modules/drawable'
+require_rel '../modules/dimensionable'
 class Cursor
   include Dimensionable
   include Drawable

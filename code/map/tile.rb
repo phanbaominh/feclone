@@ -4,9 +4,11 @@ class Tile
 
   def initialize(
       unit: nil,
-      dimensioner: Dimensioner.new
+      dimensioner: Dimensioner.new,
+      terrain: :default
   )
     @dimensioner = dimensioner
+    @terrain = Terrain.get_terrain(name: terrain)
     if unit
       @unit = unit
       set_unit_dms
@@ -21,7 +23,8 @@ class Tile
   def draw
     unit.draw if unit
   end
-
+  
+  
   private
 
   def set_unit_dms

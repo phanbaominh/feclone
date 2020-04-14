@@ -5,13 +5,15 @@ class Unit
   def initialize(
     name: nil,
     dimensioner: MapSprite.map_spr_dms,
-    sprite: nil
+    image_path: nil,
+    movement: Movement.new
   )
     @map_sprite = MapSprite.new(
       dimensioner: dimensioner,
-      sprite: sprite
+      image_path: image_path
     )
     @name = name
+    @movement = movement
   end
 
   def draw

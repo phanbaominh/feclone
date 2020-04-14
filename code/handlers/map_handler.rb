@@ -1,3 +1,4 @@
+require_relative '../modules/buttonable'
 class MapHandler
   include Buttonable
   attr_accessor :map, :cursor, :buttons
@@ -37,6 +38,11 @@ class MapHandler
     end
   end
   
+  def kb_z
+    if  unit = unit_focused?
+      
+    end
+  end
   def kb_down
     cursor.y_grid += 1
   end

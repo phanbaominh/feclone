@@ -1,22 +1,24 @@
-class Tiler
-  attr_accessor :sprite, :width, :height
-  def initialize(file_path: "",  width: 16, height: 16)
+class Tiler < Service
+  attr_reader :sprite, :width, :height, :grid
+  def initialize(file_path = "", grid = false, width = 16, height = 16)
     @sprite = Magick::ImageList.new(file_path)
     @width = width
     @height = height
+    @grid = grid
   end
   
   def perform
     result = []
     grid_width = sprite.columns / width
     grid_height = sprite.rows / height
-    
     grid_height.times do |i|
+      row = []
         grid_width.times do |j|
-            result << sprite.crop(j * width, i * height, width, height)
+            row << sprite.crop(j * width, i * height, width, height)
         end
+      result << row
     end
-
+    result = result.flatten if !grid
     result
   end
 end

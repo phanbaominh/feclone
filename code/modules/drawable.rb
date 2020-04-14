@@ -5,7 +5,6 @@ module Drawable
 
     image = get_frame
     return if !image 
-    image = Gosu::Image.new(image, retro: true) if rmagick?
     !custom_draw? ? image.draw(*dimensioner.get_3d, x_scale, y_scale) : custom_draw(image)
 
     post_draw
@@ -60,11 +59,12 @@ module Drawable
     cur_animator.reset_frame
   end
 
-  def build_animator(index: 0, frames_count: 1, times_per_frame: [0], delta: 1, reverse: true)
+  def build_animator(index: 0, frames_count: 1, times_per_frame: [0], delta: 1, reverse: true, rmagick: false)
     Animator.new(
       sprite: build_sprite(index: index, frames_count: frames_count, delta: delta),
       times_per_frame: times_per_frame,
-      reverse: reverse
+      reverse: reverse,
+      rmagick: rmagick
     )
   end
 end
