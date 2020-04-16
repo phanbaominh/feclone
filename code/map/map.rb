@@ -9,6 +9,7 @@ class Map
     @sprite = Gosu::Image.new(image_path, retro: true)
     @tiles = set_up_tiles
     test_tiles
+    PathFinder.perform(terrains, Dimensioner.new(x_grid: 5, y_grid: 5), Movement.new)
   end
 
   def draw
@@ -21,15 +22,15 @@ class Map
   end
   
   def add_unit(x, y, unit)
-    tiles[x][y].unit = unit
+    tiles[y][x].unit = unit
   end
 
   def unit_present?(x, y)
-    tiles[x][y].unit
+    tiles[y][x].unit
   end
   
   def get_unit(x,y)
-    tile[x][y].unit
+    tile[y][x].unit
   end
   
   def toogle_highlight(x_src: 0, y_src: 0, movement: nil)
@@ -39,12 +40,12 @@ class Map
 
   def set_up_tiles
     tiles = []
-    sprite.width_grid.to_i.times do |i|
-        column = []
-        sprite.height_grid.to_i.times do |j|
-            column << Tile.new(dimensioner: Dimensioner.new(x_grid: i, y_grid: j), terrain: terrains[j][i])
+    sprite.height_grid.to_i.times do |i|
+        row = []
+        sprite.width_grid.to_i.times do |j|
+            row << Tile.new(dimensioner: Dimensioner.new(x_grid: j, y_grid: i), terrain: terrains[i][j])
         end
-        tiles << column
+        tiles << row
     end
     tiles
   end

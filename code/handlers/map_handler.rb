@@ -9,8 +9,10 @@ class MapHandler
       KB_DOWN:  true,
       KB_UP:    true,
       KB_RIGHT: true,
-      KB_LEFT:  true
+      KB_LEFT:  true,
+      KB_Z: true
     }
+    change_cursor_state
   end
   
   def draw
@@ -23,6 +25,7 @@ class MapHandler
   #BUTTONABLE INTERFACE#
   ######################
   def pre_handling
+    
     !cursor.debounced?
   end
   
@@ -40,7 +43,7 @@ class MapHandler
   
   def kb_z
     if  unit = unit_focused?
-      
+      unit.change_ani_state(:down)
     end
   end
   def kb_down

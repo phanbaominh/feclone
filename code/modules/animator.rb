@@ -1,14 +1,13 @@
 class Animator
   attr_reader :sprite, :times_per_frame, :timeable, :reverse
   attr_accessor :delta, :current_frame
-
+  include Drawable
   def initialize(sprite: nil, times_per_frame: nil, reverse: false, rmagick: false)
     if !rmagick
       @sprite = sprite
     else
       @sprite = sprite.collect{ |image| Gosu::Image.new(image, retro: true) }
     end
-    p 1
     @times_per_frame = times_per_frame
     @timeable = Timeable.new(wait: times_per_frame[0])
     @current_frame = 0
@@ -27,7 +26,10 @@ class Animator
     current_frame = 0
     timeable.set_current
   end
-
+  
+  def animator
+    self
+  end
   private
   
   def update_current

@@ -42,15 +42,9 @@ end
 def prettify(array)
     array.map{ |a| a.map { |i| i.to_s.rjust(2) }.join }
 end
-def find_path(arr, srcx, srcy, destx, desty, move, path)
-  p destx.to_s + " " + desty.to_s
-  
-  path << [destx, desty]
-  
-  if destx == srcx && desty == srcy && move>=0
-    return path
-  end
-
+def find_path(arr, srcx, srcy, destx, desty, move)
+ 
+  return [] if destx == srcx && desty == srcy && move>=0
   move -= arr[destx][desty].to_i
   return false if move < 0
 
@@ -71,13 +65,13 @@ def find_path(arr, srcx, srcy, destx, desty, move, path)
 
   dests.each do |dest|  
     arr[destx][desty], tmp = "#", arr[destx][desty]
-    res = find_path(arr, srcx, srcy, dest[0], dest[1], move, path)
+    res = find_path(arr, srcx, srcy, dest[0], dest[1], move)
     arr[destx][desty] = tmp 
-    return res if res
-    path.pop()
+    return res << [destx, desty] if res
+
   end
   res
 end
 
 puts prettify(load_file("text.txt"))
-p find_path(load_file("text.txt"), 5, 5, 3, 4, 5, [] )
+p find_path(load_file("text.txt"), 5, 5, 2, 4, 5)

@@ -2,10 +2,10 @@ require_rel '../modules/drawable'
 require_rel '../modules/dimensionable'
 class Cursor
   include Dimensionable
-  include Drawable
+  
   
   attr_reader :sprite, :buttons, :timeable, :wait, :animators, :ani_state, :map
-  
+  include Drawable
     
   def self.map_spr_dms(x: 0, y: 0)
     Dimensioner.new(
@@ -40,7 +40,7 @@ class Cursor
       )
     }
 
-    @ani_state = :selected
+    @ani_state = :idle
   end
   
   def debounced?
