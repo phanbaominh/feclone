@@ -1,9 +1,9 @@
 class MapSprite
   include Drawable
   include Dimensionable
-  attr_accessor :sprite, :animators, :movable_tiles, :highlighter_state, :highlighter_offset
+  attr_accessor :sprite, :animators, :movable_tiles, :highlighter_state, :highlighter_offset, :arrow
   attr_reader :ani_state
-  ANI_STATES = [:left, :right, :down, :up, :idle, :wait, :selected]
+  ANI_STATES = [:left, :right, :down, :up, :idle, :wait, :hover]
   def self.map_spr_dms(x: 0, y: 0)
     Dimensioner.new(
       x_grid: x,
@@ -21,6 +21,7 @@ class MapSprite
     @dimensioner = dimensioner
     @movable_tiles = nil
     @highlighter_state = :idle
+    @arrow = Arrow.new
     if animatable
       setup_animators
     end
@@ -31,9 +32,10 @@ class MapSprite
     super
     movable_tiles.each_with_index do |row, i|
       row.each_with_index do |tile, j|
-        Highlighter.draw(const: highlighter_const_name, x_grid: x_grid + (j - highlighter_offset), y_grid: y_grid + (i - highlighter_offset)) if tile != "#"
+        Highlighter.draw(const: highlighter_const_name, x_grid: x_grid + (j - highlighter_offset), y_grid: y_grid + (i - highlighter_offset)) if tile
       end
     end if movable_tiles && highlighter_state != :idle
+    arrow.draw(dimensioner)
   end
   private
 
@@ -52,6 +54,7 @@ class MapSprite
         @animators[state] = moving_animator(index: i * 4)
       end
     end
+    @animators[:active] = @animators[:down]
     @ani_state = :idle
   end
   

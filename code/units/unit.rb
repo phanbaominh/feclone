@@ -36,12 +36,30 @@ class Unit
     map_sprite.dimensioner
   end
 
-  def change_ani_state(state)
+  def change_ani_state(state: state)
     map_sprite.ani_state = state
   end
 
-  def change_highlighter_state(state:, offset: 0)
-    map_sprite.highlighter_offset = offset
+  def change_sprite_state(state:)
+    change_ani_state(state: state)
+    change_highlighter_state(state: state)
+  end
+  
+  def change_move_state(move:)
+    change_ani_state(state: move) if map_sprite.ani_state != move && map_sprite.arrow.length == 0
+    change_arrow(move: move)
+  end
+
+  def change_arrow(move:)
+    map_sprite.arrow.setup_arrow(move: move)
+  end
+
+  def clear_arrow
+    map_sprite.arrow.clear
+  end
+
+  def change_highlighter_state(state:)
+    map_sprite.highlighter_offset = movement.value
     map_sprite.highlighter_state = state
   end
 

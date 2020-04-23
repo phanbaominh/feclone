@@ -2,7 +2,7 @@ require_rel 'services'
 module GC
   SCALING_FACTOR = 3
   GRID_SIZE      = 16 * SCALING_FACTOR
-  Z_BG, Z_HIGHLIGHT, Z_UNIT, Z_CURSOR       = *0..3
+  Z_BG, Z_HIGHLIGHT, Z_UNIT, Z_ARROW, Z_CURSOR       = *0..4
   CURSOR_DELAY   = 100
   
   GBA_SCREEN_WIDTH = 240

@@ -42,7 +42,7 @@ class Terrain
   end
   
   def move_cost(type)
-    types[type] ? types[type] : '#'
+    types[type] ? types[type] : nil
   end
   private
 

@@ -34,7 +34,7 @@ class Cursor
         frames_count: 4,
         times_per_frame: [300, 50, 50, 50],
       ),
-      selected: build_animator(
+      hover: build_animator(
         index: 8,
         reverse: false
       )

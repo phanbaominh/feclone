@@ -1,7 +1,7 @@
 require_relative '../modules/buttonable'
 class MapHandler
   include Buttonable
-  attr_accessor :map, :cursor, :buttons
+  attr_accessor :map, :cursor, :buttons, :unit_activated, :current_unit
   def initialize(map: nil, cursor: nil)
     @map = map
     @cursor = cursor
@@ -43,50 +43,81 @@ class MapHandler
   end
   
   def kb_z
-    if  unit = unit_focused?
-      unit.change_ani_state(:down)
-      #p map.terrains
-      #p unit.dimensioner
-      #p unit.movement
-      unit.add_moveable_tiles(moveable_tiles: PathFinder.perform(map.terrains, unit.dimensioner, unit.movement))
-      unit.change_highlighter_state(state: :active, offset: unit.movement.value)
+    if unit = unit_focused?
+      activate_unit(unit)
     end
   end
 
   def kb_x
-    unit = unit_focused?
-    if  unit && unit.map_sprite.highlighter_state == :active
-      unit.change_highlighter_state(state: :idle)
-      unit.change_ani_state(:selected)
+    if unit_activated
+      change_to_hover
     end
   end
+
   def kb_down
     cursor.y_grid += 1
+    change_arrow_state(move: :down) if unit_activated
   end
 
   def kb_up
     cursor.y_grid -= 1
+    change_arrow_state(move: :up) if unit_activated
   end
 
   def kb_right
     cursor.x_grid += 1
+    change_arrow_state(move: :right) if unit_activated
   end
   
   def kb_left
     cursor.x_grid -= 1
+    change_arrow_state(move: :left) if unit_activated
   end
   
+  def change_arrow_state(move:)
+    current_unit.change_move_state(move: move) 
+  end
+
   def change_cursor_state(move_out: false)
-    unit = unit_focused?
-    if unit && move_out
-      unit.change_ani_state(:idle)
-      cursor.ani_state = :idle
-    elsif unit && cursor.ani_state == :idle
-      cursor.ani_state = :selected
-      unit.change_ani_state(:selected)
-    elsif !unit && cursor.ani_state == :selected
+    if !unit_activated
+      unit = unit_focused?
+      if unit && move_out
+        unit.change_sprite_state(state: :idle)
+        cursor.ani_state = :idle
+      elsif unit && cursor.ani_state == :idle
+        unit.add_moveable_tiles(moveable_tiles: PathFinder.perform(map.terrains, unit.dimensioner, unit.movement))
+        cursor.ani_state = :hover
+        unit.change_sprite_state(state: :hover)
+      elsif !unit && cursor.ani_state == :hover
+        cursor.ani_state = :idle
+      end
+    else
       cursor.ani_state = :idle
     end
+  end
+
+  def change_to_hover
+    rehover_cursor
+    unactivate_unit
+  end
+
+  def rehover_cursor
+    cursor.x_grid = current_unit.x_grid
+    cursor.y_grid = current_unit.y_grid
+    cursor.ani_state = :hover
+  end
+
+  def unactivate_unit
+    current_unit.change_sprite_state(state: :hover)
+    current_unit.clear_arrow
+    self.unit_activated = false
+    self.current_unit = nil
+  end
+
+  def activate_unit(unit)
+    self.unit_activated = true
+    self.current_unit = unit
+    unit.change_sprite_state(state: :active)
   end
 
   def unit_focused?
