@@ -10,6 +10,7 @@ class Arrow
   VERTICAL = [:up, :down]
   attr_accessor :body, :head, :last_move, :tail
   attr_reader :body_sprite, :corner_sprite, :head_sprite, :tail_sprite
+  Part = Struct.new(:sprite, :direction, :is_corner)
 
   def initialize
     clear
@@ -20,20 +21,20 @@ class Arrow
     if opposite_direction?(last_move, move)
       if body.size > 0 
         last = self.body.pop 
-        self.head = [head_sprite[last[1]], last[1]] if last[2]
+        self.head = Part.new(head_sprite[last.direction], last.direction) if last.is_corner
       else 
         self.head = nil
         self.tail = nil
       end
-      self.last_move = head ? head[1] : nil
+      self.last_move = head ? head.direction : nil
       return
     end
     self.tail = tail_sprite[move] if !tail
-    self.head = [head_sprite[move], move]
+    self.head = Part.new(head_sprite[move], move)
     if last_move == move 
-      self.body << [body_sprite[last_move], last_move]
+      self.body << Part.new(body_sprite[last_move], last_move, false)
     elsif last_move
-      self.body << [corner_sprite["#{last_move}_#{move}".to_sym], last_move, true]
+      self.body << Part.new(corner_sprite[corner_direction(last_move, move)], last_move, true)
     end
     self.last_move = move
   end
@@ -46,16 +47,16 @@ class Arrow
   end
 
   def draw(dimensioner)
-    arrow_parts = head ? body + [head] : []
+    arrow_parts = arrow_exist? ? combined_body_head : []
     x_grid = dimensioner.x_grid
     y_grid = dimensioner.y_grid
-    tail.draw(Util.get_real_pos(x_grid), Util.get_real_pos(y_grid), GC::Z_UNIT - 1, GC::SCALING_FACTOR, GC::SCALING_FACTOR) if tail
-    arrow_parts.each do |sprite|
-      x_grid = x_grid_value(x_grid, sprite[1])
-      y_grid = y_grid_value(y_grid, sprite[1])
+    draw_tail(x_grid, y_grid) if tail
+    arrow_parts.each do |part|
+      x_grid = x_grid_value(x_grid, part.direction)
+      y_grid = y_grid_value(y_grid, part.direction)
       real_x = Util.get_real_pos(x_grid)
       real_y = Util.get_real_pos(y_grid)
-      sprite[0].draw(real_x, real_y, GC::Z_ARROW, GC::SCALING_FACTOR, GC::SCALING_FACTOR)
+      draw_arrow_part(part.sprite, real_x, real_y)
     end
   end
 
@@ -64,6 +65,26 @@ class Arrow
     body.size + count_head
   end
   private
+
+  def corner_direction(last_move, move)
+    "#{last_move}_#{move}".to_sym
+  end
+
+  def arrow_exist?
+    head
+  end
+
+  def combined_body_head
+    body + [head]
+  end
+
+  def draw_tail(x_grid, y_grid)
+    tail.draw(Util.get_real_pos(x_grid), Util.get_real_pos(y_grid), GC::Z_UNIT - 1, GC::SCALING_FACTOR, GC::SCALING_FACTOR)
+  end
+
+  def draw_arrow_part(sprite, x, y)
+    sprite.draw(x, y, GC::Z_ARROW, GC::SCALING_FACTOR, GC::SCALING_FACTOR)
+  end
 
   def x_grid_value(x, move)
     delta = 0

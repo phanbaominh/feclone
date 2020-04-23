@@ -45,12 +45,12 @@ class Unit
     change_highlighter_state(state: state)
   end
   
-  def change_move_state(move:)
+  def change_move_state(move:, cursor_terrain:)
     change_ani_state(state: move) if map_sprite.ani_state != move && map_sprite.arrow.length == 0
-    change_arrow(move: move)
+    change_arrow(move: move, cursor_terrain: cursor_terrain)
   end
 
-  def change_arrow(move:)
+  def change_arrow(move:, cursor_terrain:)
     map_sprite.arrow.setup_arrow(move: move)
   end
 

@@ -50,32 +50,33 @@ class MapHandler
 
   def kb_x
     if unit_activated
-      change_to_hover
+      rehover_cursor
+      unactivate_unit
     end
   end
 
   def kb_down
     cursor.y_grid += 1
-    change_arrow_state(move: :down) if unit_activated
+    change_move_state(move: :down) if unit_activated
   end
 
   def kb_up
     cursor.y_grid -= 1
-    change_arrow_state(move: :up) if unit_activated
+    change_move_state(move: :up) if unit_activated
   end
 
   def kb_right
     cursor.x_grid += 1
-    change_arrow_state(move: :right) if unit_activated
+    change_move_state(move: :right) if unit_activated
   end
   
   def kb_left
     cursor.x_grid -= 1
-    change_arrow_state(move: :left) if unit_activated
+    change_move_state(move: :left) if unit_activated
   end
   
-  def change_arrow_state(move:)
-    current_unit.change_move_state(move: move) 
+  def change_move_state(move:)
+    current_unit.change_move_state(move: move, cursor_terrain: map.terrains[cursor.y_grid][cursor.x_grid]) 
   end
 
   def change_cursor_state(move_out: false)
@@ -94,11 +95,6 @@ class MapHandler
     else
       cursor.ani_state = :idle
     end
-  end
-
-  def change_to_hover
-    rehover_cursor
-    unactivate_unit
   end
 
   def rehover_cursor
