@@ -1,6 +1,6 @@
 class Unit
   include Dimensionable
-  attr_accessor :map_sprite, :name
+  attr_accessor :map_sprite, :name, :movement
   
   def initialize(
     name: nil,
@@ -38,5 +38,14 @@ class Unit
 
   def change_ani_state(state)
     map_sprite.ani_state = state
+  end
+
+  def change_highlighter_state(state:, offset: 0)
+    map_sprite.highlighter_offset = offset
+    map_sprite.highlighter_state = state
+  end
+
+  def add_moveable_tiles(moveable_tiles:)
+    map_sprite.movable_tiles = moveable_tiles if !map_sprite.movable_tiles
   end
 end

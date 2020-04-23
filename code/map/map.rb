@@ -9,7 +9,6 @@ class Map
     @sprite = Gosu::Image.new(image_path, retro: true)
     @tiles = set_up_tiles
     test_tiles
-    PathFinder.perform(terrains, Dimensioner.new(x_grid: 5, y_grid: 5), Movement.new)
   end
 
   def draw

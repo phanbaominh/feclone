@@ -18,4 +18,8 @@ module Dimensionable
   def dimensioner
     @dimensioner
   end
+
+  def dimensioner=(value)
+    @dimensioner = value
+  end
 end

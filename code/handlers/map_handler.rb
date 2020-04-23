@@ -10,7 +10,8 @@ class MapHandler
       KB_UP:    true,
       KB_RIGHT: true,
       KB_LEFT:  true,
-      KB_Z: true
+      KB_Z: true,
+      KB_X: true
     }
     change_cursor_state
   end
@@ -44,6 +45,19 @@ class MapHandler
   def kb_z
     if  unit = unit_focused?
       unit.change_ani_state(:down)
+      #p map.terrains
+      #p unit.dimensioner
+      #p unit.movement
+      unit.add_moveable_tiles(moveable_tiles: PathFinder.perform(map.terrains, unit.dimensioner, unit.movement))
+      unit.change_highlighter_state(state: :active, offset: unit.movement.value)
+    end
+  end
+
+  def kb_x
+    unit = unit_focused?
+    if  unit && unit.map_sprite.highlighter_state == :active
+      unit.change_highlighter_state(state: :idle)
+      unit.change_ani_state(:selected)
     end
   end
   def kb_down

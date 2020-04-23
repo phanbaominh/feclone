@@ -1,13 +1,18 @@
 require_relative 'service'
 class PathFinder < Service
-  attr_reader :terrains, :move_costs, :movement, :paths
+  attr_reader :terrains, :move_costs, :movement, :paths, :center
   def initialize(terrains, dimensioner, movement)
     @movement = movement
-    @move_costs = build_move_array(terrains, dimensioner.x_grid, dimensioner.y_grid)
+    @center = movement.value
     @paths = []
-    (move_costs.size).times do
+    @move_costs = []
+    size = movement.value * 2 + 1
+
+    (movement.value * 2 + 1).times do 
+        @move_costs << ['#'] * size
         @paths << []
-    end 
+    end
+    build_move_array(terrains, dimensioner.x_grid, dimensioner.y_grid) 
   end
 
   def perform
@@ -19,27 +24,24 @@ class PathFinder < Service
         end
       end
     end
+    paths
   end
   
   private
   def build_move_array(terrains, x, y)
-    move = []
-    terrains.each_with_index do |row, i|
-      if i >= y - movement.value && i <= y + movement.value
-        move_row = []
-        row.each_with_index do |tile, j|
-            if j >= x - movement.value && j <= x + movement.value
-                if dist(y, x, i ,j) > movement.value
-                  move_row << '#'
-                else
-                  move_row << Terrain.get_terrain(name: terrains[i][j]).move_cost(movement.type)
-                end
-            end
+    #puts Util.prettify(move_costs)
+    move_costs.each_with_index do |row, i|
+      row.each_with_index do |tile, j|
+        offset_i = y + i - center
+        offset_j = x + j - center
+        next if offset_i < 0 || offset_j < 0 || offset_i >= terrains.size || offset_j >= terrains[0].size
+        if dist(center, center, i ,j) > movement.value
+          move_costs[i][j] = '#'
+        else
+          move_costs[i][j] = Terrain.get_terrain(name: terrains[offset_i][offset_j]).move_cost(movement.type)
         end
-        move << move_row
       end
     end
-    move 
   end
 
   def dist(x, y, x2, y2)
@@ -50,15 +52,14 @@ class PathFinder < Service
     if arr[destx][desty] == "#"
         return nil
     end
-    return paths[destx][desty] if paths[destx][desty] && paths[destx][desty] != "#"
+
     return [] if destx == srcx && desty == srcy && move>=0
-    move -= arr[destx][desty].to_i
     return false if move < 0
-  
+    return paths[destx][desty].dup if paths[destx][desty] && paths[destx][desty] != "#" && move >= paths[destx][desty][0][2
+    ]
     xa = [1, -1, 0, 0]
     ya = [0, 0, 1, -1]
     dests = []
-    
     4.times do |i|
       x = destx + xa[i]
       y = desty + ya[i]
@@ -69,16 +70,18 @@ class PathFinder < Service
     
     dests = dests.sort{|a, b| a[2] <=> b[2]}
     res = nil
-  
-    dests.each do |dest|  
-      arr[destx][desty], tmp = "#", arr[destx][desty]
-      res = find_path(arr, srcx, srcy, dest[0], dest[1], move)
-      arr[destx][desty] = tmp 
+    dests.each do |dest| 
+      arr[destx][desty], current_move_cost = "#", arr[destx][desty]
+      res = find_path(arr, srcx, srcy, dest[0], dest[1], move - current_move_cost)
+      arr[destx][desty] = current_move_cost
       if res
-        self.paths[destx][desty] = (res << [destx, desty]).dup
+        sum_move = !res.empty? ? res[-1][2]  : 0
+        return false if move  < sum_move + current_move_cost
+        res << [destx, desty, sum_move + current_move_cost]
+        self.paths[destx][desty] = res.dup
         return res
       end
-  
+     
     end
     res
   end

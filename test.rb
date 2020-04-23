@@ -73,5 +73,23 @@ def find_path(arr, srcx, srcy, destx, desty, move)
   res
 end
 
-puts prettify(load_file("text.txt"))
-p find_path(load_file("text.txt"), 5, 5, 2, 4, 5)
+#puts prettify(load_file("text.txt"))
+#p find_path(load_file("text.txt"), 5, 5, 2, 4, 5)
+class Test
+  
+  attr_accessor :a
+  def initialize
+    @a = []
+  end
+  
+  def self.gay
+    2
+  end
+
+  B = gay
+end
+
+test = Test.new
+p test.instance_variable_get(:@b)
+puts test.a
+puts Test::B

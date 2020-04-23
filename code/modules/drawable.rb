@@ -1,11 +1,11 @@
 module Drawable
   #require includer implement sprite, to animate require animator/(animators + ani_state)
-  def draw(x: nil, y: nil, z: nil, x_scale: GC::SCALING_FACTOR, y_scale: GC::SCALING_FACTOR)
+  def draw(dimensioner_arg: nil, x_scale: GC::SCALING_FACTOR, y_scale: GC::SCALING_FACTOR)
     return if !pre_draw
   
     image = get_frame
     return if !image
-    dimensions = methods.include?(:dimensioner) ? dimensioner.get_3d : [x, y, z]  
+    dimensions = methods.include?(:dimensioner) ? dimensioner.get_3d : dimensioner_arg.get_3d  
     !custom_draw? ? image.draw(*dimensions, x_scale, y_scale) : custom_draw(image)
 
     post_draw

@@ -1,7 +1,7 @@
 class MapSprite
   include Drawable
-
-  attr_accessor :sprite, :animators, :dimensioner
+  include Dimensionable
+  attr_accessor :sprite, :animators, :movable_tiles, :highlighter_state, :highlighter_offset
   attr_reader :ani_state
   ANI_STATES = [:left, :right, :down, :up, :idle, :wait, :selected]
   def self.map_spr_dms(x: 0, y: 0)
@@ -19,14 +19,28 @@ class MapSprite
                  animatable: true)
     @sprite = Gosu::Image.load_tiles(image_path, 32, 32, retro: true)
     @dimensioner = dimensioner
+    @movable_tiles = nil
+    @highlighter_state = :idle
     if animatable
       setup_animators
     end
     #p have_states?
   end
-  
+    
+  def draw
+    super
+    movable_tiles.each_with_index do |row, i|
+      row.each_with_index do |tile, j|
+        Highlighter.draw(const: highlighter_const_name, x_grid: x_grid + (j - highlighter_offset), y_grid: y_grid + (i - highlighter_offset)) if tile != "#"
+      end
+    end if movable_tiles && highlighter_state != :idle
+  end
   private
-  
+
+  def highlighter_const_name
+    "#{highlighter_state.upcase}_BLUE_HIGHLIGHTER"
+  end
+
   def setup_animators
     @animators = {}
     moving = true
@@ -51,4 +65,6 @@ class MapSprite
   ####################
   #DRAWABLE INTERFACE#
   ####################
+
+  
 end

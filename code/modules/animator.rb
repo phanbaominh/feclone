@@ -1,3 +1,4 @@
+require_relative 'timeable'
 class Animator
   attr_reader :sprite, :times_per_frame, :timeable, :reverse
   attr_accessor :delta, :current_frame
