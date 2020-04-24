@@ -1,7 +1,7 @@
 class MapSprite
   include Drawable
   include Dimensionable
-  attr_accessor :sprite, :animators, :movable_tiles, :highlighter_state, :highlighter_offset, :arrow
+  attr_accessor :sprite, :animators, :movable_tiles, :highlighter_state, :highlighter_offset, :arrow, :move_count
   attr_reader :ani_state
   ANI_STATES = [:left, :right, :down, :up, :idle, :wait, :hover]
   def self.map_spr_dms(x: 0, y: 0)
@@ -15,6 +15,7 @@ class MapSprite
   end
 
   def initialize(dimensioner: MapSprite.default_map_spr_dms, 
+                 move_count:,
                  image_path: nil,
                  animatable: true)
     @sprite = Gosu::Image.load_tiles(image_path, 32, 32, retro: true)
@@ -22,6 +23,7 @@ class MapSprite
     @movable_tiles = nil
     @highlighter_state = :idle
     @arrow = Arrow.new
+    @move_count = move_count
     if animatable
       setup_animators
     end

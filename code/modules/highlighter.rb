@@ -1,6 +1,6 @@
 module Highlighter
     def self.build_highlighter(sprite:)
-        p "Size: #{sprite.size}"
+        #p "Size: #{sprite.size}"
         Animator.new(sprite: sprite, times_per_frame: [50] * sprite.size)
     end
 

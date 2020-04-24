@@ -10,7 +10,8 @@ class Unit
   )
     @map_sprite = MapSprite.new(
       dimensioner: dimensioner,
-      image_path: image_path
+      image_path: image_path,
+      move_count: movement.value
     )
     @name = name
     @movement = movement
@@ -45,17 +46,51 @@ class Unit
     change_highlighter_state(state: state)
   end
   
-  def change_move_state(move:, cursor_terrain:)
+  def change_move_state(move:, cursor_terrain:, dms:)
     change_ani_state(state: move) if map_sprite.ani_state != move && map_sprite.arrow.length == 0
-    change_arrow(move: move, cursor_terrain: cursor_terrain)
-  end
 
-  def change_arrow(move:, cursor_terrain:)
-    map_sprite.arrow.setup_arrow(move: move)
+    move_cost = cursor_terrain.move_cost(movement.type)
+    arrow = map_sprite.arrow
+    j = dms.y_grid + movement.value - y_grid
+    i = dms.x_grid + movement.value - x_grid
+    tile_route = map_sprite.movable_tiles[j][i]
+    
+    if !tile_route
+      arrow.out_of_range = true
+      return
+    end
+    
+    if arrow.opposite_direction?(arrow.last_move, move)
+      move_cost = -move_cost
+    end
+
+    if arrow.out_of_range
+      arrow.out_of_range = false
+      return if arrow.head_dms == dms
+      move_cost = 999
+    end
+
+    if map_sprite.move_count - move_cost < 0 
+      if tile_route
+        map_sprite.move_count = movement.value
+        if tile_route == "#"
+          arrow.clear
+          return
+        end
+        arrow.build_arrow(tile_route: tile_route, center: movement.value, dms: dms)
+        move_cost = tile_route[-1][-1]
+      else
+        return
+      end
+    else
+      arrow.setup_arrow(move: move, dms: dms)
+    end
+    map_sprite.move_count -= move_cost
   end
 
   def clear_arrow
     map_sprite.arrow.clear
+    map_sprite.move_count = 0
   end
 
   def change_highlighter_state(state:)

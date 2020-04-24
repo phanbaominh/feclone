@@ -8,7 +8,7 @@ class Arrow
   }
   HORIZONTAL = [:left, :right]
   VERTICAL = [:up, :down]
-  attr_accessor :body, :head, :last_move, :tail
+  attr_accessor :body, :head, :last_move, :tail, :out_of_range, :head_dms
   attr_reader :body_sprite, :corner_sprite, :head_sprite, :tail_sprite
   Part = Struct.new(:sprite, :direction, :is_corner)
 
@@ -17,25 +17,27 @@ class Arrow
     build_sprites
   end
 
-  def setup_arrow(move:)
+  def setup_arrow(move:, dms:)
+    self.head_dms = Dimensioner.new(x_grid: dms.x_grid, y_grid: dms.y_grid)
     if opposite_direction?(last_move, move)
       if body.size > 0 
-        last = self.body.pop 
+        last = self.body.pop  
         self.head = Part.new(head_sprite[last.direction], last.direction) if last.is_corner
       else 
-        self.head = nil
-        self.tail = nil
+        remove_arrow
       end
       self.last_move = head ? head.direction : nil
       return
     end
     self.tail = tail_sprite[move] if !tail
     self.head = Part.new(head_sprite[move], move)
+
     if last_move == move 
       self.body << Part.new(body_sprite[last_move], last_move, false)
     elsif last_move
       self.body << Part.new(corner_sprite[corner_direction(last_move, move)], last_move, true)
     end
+
     self.last_move = move
   end
 
@@ -44,8 +46,19 @@ class Arrow
     self.tail = nil
     self.head = nil
     self.last_move = nil
+    self.head_dms = nil
   end
 
+  def build_arrow(tile_route:, center:, dms:)
+    clear
+    prev_dim = [center, center]
+    tile_route.each do |tile|
+      tile_dim = tile[0..1]
+      move, dms = direction(tile_dim, prev_dim, dms)
+      setup_arrow(move: move, dms: dms)
+      prev_dim = tile_dim
+    end
+  end
   def draw(dimensioner)
     arrow_parts = arrow_exist? ? combined_body_head : []
     x_grid = dimensioner.x_grid
@@ -64,7 +77,30 @@ class Arrow
     count_head = head ? 1 : 0
     body.size + count_head
   end
+
+  def opposite_direction?(last_move, move)
+    same_axis?(last_move, move) && last_move != move
+  end
+
   private
+
+  def direction(tile_dms, prev_tile_dms, dms)
+    delta_y = tile_dms[0] - prev_tile_dms[0]
+    delta_x = tile_dms[1] - prev_tile_dms[1]
+    dms.x_grid += delta_x
+    dms.y_grid += delta_y
+    if delta_x !=0
+      move = delta_x > 0 ? :right : :left
+    else
+      move = delta_y > 0 ? :down : :up
+    end
+    [move, dms]
+  end
+
+  def remove_arrow
+    self.head = nil
+    self.tail = nil
+  end
 
   def corner_direction(last_move, move)
     "#{last_move}_#{move}".to_sym
@@ -110,9 +146,7 @@ class Arrow
     (horizontal?(move) && horizontal?(last_move)) || (vertical?(move) && vertical?(last_move))
   end
 
-  def opposite_direction?(last_move, move)
-    same_axis?(last_move, move) && last_move != move
-  end
+  
 
   def build_sprites
     @body_sprite  = {

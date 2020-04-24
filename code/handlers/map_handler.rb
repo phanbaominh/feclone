@@ -76,7 +76,7 @@ class MapHandler
   end
   
   def change_move_state(move:)
-    current_unit.change_move_state(move: move, cursor_terrain: map.terrains[cursor.y_grid][cursor.x_grid]) 
+    current_unit.change_move_state(move: move, cursor_terrain: Terrain.get_terrain(name: map.terrains[cursor.y_grid][cursor.x_grid]), dms: cursor.dimensioner.dup)
   end
 
   def change_cursor_state(move_out: false)
@@ -114,6 +114,7 @@ class MapHandler
     self.unit_activated = true
     self.current_unit = unit
     unit.change_sprite_state(state: :active)
+    #p unit.map_sprite.movable_tiles
   end
 
   def unit_focused?

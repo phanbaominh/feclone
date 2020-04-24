@@ -25,6 +25,9 @@ class Dimensioner
     [x + x_offset, y + y_offset, z]
   end
 
+  def ==(other)
+    x_grid == other.x_grid && y_grid == other.y_grid
+  end
   private
 
   def real(dimension)
