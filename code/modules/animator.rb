@@ -1,9 +1,10 @@
 require_relative 'timeable'
 class Animator
-  attr_reader :sprite, :times_per_frame, :timeable, :reverse
+  attr_reader :sprite, :times_per_frame, :timeable, :reverse, :dms
   attr_accessor :delta, :current_frame
-  def initialize(sprite: nil, times_per_frame: nil, reverse: false)
-    @sprite = sprite
+  def initialize(sprite: nil, times_per_frame: nil, reverse: false, dms: nil)
+    @dms = dms
+    @sprite = sprite.each {|e| e.dms = @dms if !e.dms }
     @times_per_frame = times_per_frame
     @timeable = Timeable.new(wait: times_per_frame[0])
     @current_frame = 0
@@ -27,6 +28,10 @@ class Animator
     get_frame.draw
   end
 
+  def dms=(value)
+    @dms = value
+    @sprite.each {|e| e.dms = dms}
+  end
   private
   
   def update_current

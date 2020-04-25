@@ -115,11 +115,11 @@ class Arrow
   end
 
   def draw_tail(x_grid, y_grid)
-    tail.draw(Util.get_real_pos(x_grid), Util.get_real_pos(y_grid), GC::Z_UNIT - 1, GC::SCALING_FACTOR, GC::SCALING_FACTOR)
+    tail.draw(Util.get_real_pos(x_grid), Util.get_real_pos(y_grid), GC::Z_UNIT - 1, scale_x: GC::SCALING_FACTOR, scale_y: GC::SCALING_FACTOR)
   end
 
   def draw_arrow_part(sprite, x, y)
-    sprite.draw(x, y, GC::Z_ARROW, GC::SCALING_FACTOR, GC::SCALING_FACTOR)
+    sprite.draw(x, y, GC::Z_ARROW, scale_x: GC::SCALING_FACTOR, scale_y: GC::SCALING_FACTOR)
   end
 
   def x_grid_value(x, move)

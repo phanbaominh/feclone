@@ -1,5 +1,5 @@
 class Tile
-  attr_accessor :dimensioner
+  attr_accessor :dms
   attr_reader :unit
 
   def initialize(
@@ -7,7 +7,7 @@ class Tile
       dimensioner: Dimensioner.new,
       terrain: :default
   )
-    @dimensioner = dimensioner
+    @dms = dimensioner
     @terrain = Terrain.get_terrain(name: terrain)
     if unit
       @unit = unit
@@ -28,7 +28,7 @@ class Tile
   private
 
   def set_unit_dms
-    unit.map_sprite.dimensioner = MapSprite.map_spr_dms(x: dimensioner.x_grid, y: dimensioner.y_grid) if unit
+    unit.map_sprite.dms = MapSprite.map_spr_dms(x: dms.x_grid, y: dms.y_grid) if unit
   end
 
 end

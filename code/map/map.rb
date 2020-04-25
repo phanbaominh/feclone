@@ -12,7 +12,7 @@ class Map
   end
 
   def draw
-    sprite.draw(0, 0, 0, GC::SCALING_FACTOR, GC::SCALING_FACTOR)
+    sprite.draw(0, 0, 0, scale_x: GC::SCALING_FACTOR, scale_y: GC::SCALING_FACTOR)
     tiles.each do |row|
         row.each do |tile|
             tile.draw
@@ -35,6 +35,7 @@ class Map
   def toogle_highlight(x_src: 0, y_src: 0, movement: nil)
     
   end
+
   private
 
   def set_up_tiles

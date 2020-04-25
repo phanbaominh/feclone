@@ -76,7 +76,7 @@ class MapHandler
   end
   
   def change_move_state(move:)
-    current_unit.change_move_state(move: move, cursor_terrain: Terrain.get_terrain(name: map.terrains[cursor.y_grid][cursor.x_grid]), dms: cursor.dimensioner.dup)
+    current_unit.change_move_state(move: move, cursor_terrain: Terrain.get_terrain(name: map.terrains[cursor.y_grid][cursor.x_grid]), dms: cursor.dms.dup)
   end
 
   def change_cursor_state(move_out: false)
@@ -86,7 +86,7 @@ class MapHandler
         unit.change_sprite_state(state: :idle)
         cursor.ani_state = :idle
       elsif unit && cursor.ani_state == :idle
-        unit.add_moveable_tiles(moveable_tiles: PathFinder.perform(map.terrains, unit.dimensioner, unit.movement))
+        unit.add_moveable_tiles(moveable_tiles: PathFinder.perform(map.terrains, unit.dms, unit.movement))
         cursor.ani_state = :hover
         unit.change_sprite_state(state: :hover)
       elsif !unit && cursor.ani_state == :hover

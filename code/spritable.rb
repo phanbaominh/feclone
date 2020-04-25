@@ -1,7 +1,8 @@
+require 'gosu'
 module Spritable
   def draw(x = nil, y = nil, z = nil, scale_x: GC::SCALING_FACTOR, scale_y: GC::SCALING_FACTOR)
-    3ds = dms ? dms.get_3d : [x, y, z]
-    super(*3ds, scale_x, scale_y)
+    ds_3 = dms ? dms.get_3d : [x, y, z]
+    super(*ds_3, scale_x, scale_y)
   end
 
   def height_grid
@@ -14,7 +15,6 @@ module Spritable
 end
 
 class Gosu::Image
-  include Dimensionable
   attr_accessor :dms
   prepend Spritable
 end

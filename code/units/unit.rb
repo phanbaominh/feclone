@@ -22,7 +22,7 @@ class Unit
   end
   
   def get_placeholder_name
-    "Name" + map_sprite.dimensioner.x_grid.to_s + map_sprite.dimensioner.y_grid.to_s
+    "Name" + map_sprite.dms.x_grid.to_s + map_sprite.dms.y_grid.to_s
   end
 
   def inspect
@@ -33,8 +33,8 @@ class Unit
     name || get_placeholder_name
   end
 
-  def dimensioner
-    map_sprite.dimensioner
+  def dms
+    map_sprite.dms
   end
 
   def change_ani_state(state: state)

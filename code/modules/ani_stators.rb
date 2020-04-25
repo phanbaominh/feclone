@@ -1,19 +1,21 @@
-class Animators
-  attr_accessor :ani_state, :animators
+class AniStators
+  attr_accessor :ani_state, :animators, :dms
   
-  def build_animator(sprite, state, frames_count, times_per_frame, index, delta, reverse: true)
+  def build_animator(sprite:, state:, personal_dms: nil, frames_count: 1, times_per_frame: [0], index: 0, delta: 1, reverse: true)
     animator = Animator.new(
       sprite: build_sprite(sprite, frames_count, index, delta),
       times_per_frame: times_per_frame,
       reverse: reverse,
+      dms: personal_dms ? personal_dms : dms
     )
     animators[state] = animator
   end
 
 
-  def initialize(animators, ani_state)
-    @animators = animators || {}
+  def initialize(animators: {}, ani_state:, dms: nil)
+    @animators = animators
     @ani_state = ani_state
+    @dms = dms
   end
 
   def draw
@@ -25,6 +27,10 @@ class Animators
     cur_animator.reset_frame
   end
 
+  def dms=(value)
+    @dms = value
+    animators.values.each {|animator| animator.dms = value}
+  end
   private
 
   def cur_animator
