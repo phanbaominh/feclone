@@ -89,7 +89,30 @@ class Test
   B = gay
 end
 
-test = Test.new
-p test.instance_variable_get(:@b)
-puts test.a
-puts Test::B
+module Sonny 
+  def gay
+    super
+    p "sonny"
+  end
+end
+class Parent
+  prepend Sonny
+  attr_accessor :a, :b
+  def initialize(a,b)
+    @a = a
+    @b = b
+  end
+  def gay
+    p "cha"
+  end
+end
+class Son < DelegateClass(Parent)
+  attr_accessor :dim
+  def gay
+    super
+    p "con"
+  end
+end
+son = Son.new(Parent.new(3, 4)).gay
+son.dim = 3
+p son.dim

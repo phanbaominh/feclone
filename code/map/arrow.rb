@@ -1,5 +1,5 @@
 class Arrow
-  ARROW_SPRITE = Gosu::Image.load_tiles("assets/map_ui/MovementArrows_TRUE.png", 18, 18, retro: true)
+  ARROW_SPRITE = Sprite.load_tiles("assets/map_ui/MovementArrows_TRUE.png", 18, 18, retro: true)
   GRID_VALUE = {
     left: -1,
     right: 1,

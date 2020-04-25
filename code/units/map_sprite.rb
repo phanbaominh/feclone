@@ -18,7 +18,7 @@ class MapSprite
                  move_count:,
                  image_path: nil,
                  animatable: true)
-    @sprite = Gosu::Image.load_tiles(image_path, 32, 32, retro: true)
+    @sprite = Sprite.load_tiles(image_path, 32, 32, retro: true)
     @dimensioner = dimensioner
     @movable_tiles = nil
     @highlighter_state = :idle

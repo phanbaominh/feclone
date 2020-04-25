@@ -9,5 +9,5 @@ module GC
   GBA_SCREEN_HEIGHT = 160
   ROOT_PATH = Pathname.new(".")
   CHARS_PATH = ROOT_PATH.join("assets", "character")
-  PLAYER_CURSOR_SPRITE  = Gosu::Image.load_tiles("assets/map_ui/cursor.png", 32, 32, retro: true)
+  PLAYER_CURSOR_SPRITE  = Sprite.load_tiles("assets/map_ui/cursor.png", 32, 32, retro: true)
 end

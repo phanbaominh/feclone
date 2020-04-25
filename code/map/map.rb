@@ -6,7 +6,7 @@ class Map
       tiles: nil
   )
     @terrains = TerrainDrawer.perform(Tiler.perform(get_terrain_image_path(image_path), true))
-    @sprite = Gosu::Image.new(image_path, retro: true)
+    @sprite = Sprite.new(image_path, retro: true)
     @tiles = set_up_tiles
     test_tiles
   end

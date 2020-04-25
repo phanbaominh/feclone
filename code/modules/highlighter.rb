@@ -5,8 +5,9 @@ module Highlighter
     end
 
     def self.draw(const:, x_grid:, y_grid:)
-        const_get(const).draw(dimensioner_arg: Dimensioner.new(x_grid: x_grid, y_grid: y_grid, z: GC::Z_HIGHLIGHT))
+        dms = Dimensioner.new(x_grid: x_grid, y_grid: y_grid, z: GC::Z_HIGHLIGHT)
+        const_get(const).draw(*dms.get_3d)
     end
-    ACTIVE_BLUE_HIGHLIGHTER = build_highlighter(sprite: Gosu::Image.load_tiles("assets/map_ui/highlights/BlueHighlight.png", 16, 16, retro: true))
-    HOVER_BLUE_HIGHLIGHTER = build_highlighter(sprite: Gosu::Image.load_tiles("assets/map_ui/highlights/LightBlueHighlight.png", 16, 16, retro: true))
+    ACTIVE_BLUE_HIGHLIGHTER = build_highlighter(sprite: Sprite.load_tiles("assets/map_ui/highlights/BlueHighlight.png", 16, 16, retro: true))
+    HOVER_BLUE_HIGHLIGHTER = build_highlighter(sprite: Sprite.load_tiles("assets/map_ui/highlights/LightBlueHighlight.png", 16, 16, retro: true))
 end
