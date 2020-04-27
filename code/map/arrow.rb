@@ -1,16 +1,11 @@
+require_relative '../modules/directionable'
 class Arrow
+  include Directionable
   ARROW_SPRITE = Sprite.load_tiles("assets/map_ui/MovementArrows_TRUE.png", 18, 18, retro: true)
-  GRID_VALUE = {
-    left: -1,
-    right: 1,
-    up: -1,
-    down: 1
-  }
-  HORIZONTAL = [:left, :right]
-  VERTICAL = [:up, :down]
+  Part = Struct.new(:sprite, :direction, :is_corner)
+
   attr_accessor :body, :head, :last_move, :tail, :out_of_range, :head_dms
   attr_reader :body_sprite, :corner_sprite, :head_sprite, :tail_sprite
-  Part = Struct.new(:sprite, :direction, :is_corner)
 
   def initialize
     clear
@@ -51,10 +46,10 @@ class Arrow
 
   def build_arrow(tile_route:, center:, dms:)
     clear
-    prev_dim = [center, center]
+    prev_dim = Dimensioner.new(x_grid: center, y_grid: center)
     tile_route.each do |tile|
-      tile_dim = tile[0..1]
-      move, dms = direction(tile_dim, prev_dim, dms)
+      tile_dim = Dimensioner.new(x_grid: tile[1], y_grid: tile[0])
+      move = direction!(tile_dim, prev_dim, dms: dms)
       setup_arrow(move: move, dms: dms)
       prev_dim = tile_dim
     end
@@ -74,24 +69,9 @@ class Arrow
     body.size + count_head
   end
 
-  def opposite_direction?(last_move, move)
-    same_axis?(last_move, move) && last_move != move
-  end
+  
 
   private
-
-  def direction(tile_dms, prev_tile_dms, dms)
-    delta_y = tile_dms[0] - prev_tile_dms[0]
-    delta_x = tile_dms[1] - prev_tile_dms[1]
-    dms.x_grid += delta_x
-    dms.y_grid += delta_y
-    if delta_x !=0
-      move = delta_x > 0 ? :right : :left
-    else
-      move = delta_y > 0 ? :down : :up
-    end
-    [move, dms]
-  end
 
   def remove_arrow
     self.head = nil
@@ -117,33 +97,6 @@ class Arrow
   def draw_arrow_part(sprite, x, y)
     sprite.draw(x, y, GC::Z_ARROW)
   end
-
-  def grid_value(dms, move)
-    delta_x = 0
-    delta_y = 0
-    delta_x = GRID_VALUE[move] if horizontal?(move)
-    delta_y = GRID_VALUE[move] if vertical?(move)
-    Dimensioner.new(
-      x_grid: dms.x_grid + delta_x,
-      y_grid: dms.y_grid + delta_y,
-      z: dms.z
-    )
-  end
-
-
-  def horizontal?(move)
-    HORIZONTAL.include?(move)
-  end
-
-  def vertical?(move)
-    VERTICAL.include?(move)
-  end
-
-  def same_axis?(last_move, move)
-    (horizontal?(move) && horizontal?(last_move)) || (vertical?(move) && vertical?(last_move))
-  end
-
-  
 
   def build_sprites
     @body_sprite  = {

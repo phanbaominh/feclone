@@ -82,7 +82,7 @@ class MapHandler
   end
   
   def change_move_state(move:)
-    current_unit.change_move_state(move: move, cursor_terrain: Terrain.get_terrain(name: map.terrains[cursor.y_grid][cursor.x_grid]), dms: cursor.dms.dup)
+    current_unit.change_move_state(move: move, cursor_terrain: Terrain.get_terrain(name: map.terrains[cursor.y_grid][cursor.x_grid]), cursor_dms: cursor.dms.dup)
   end
 
   def change_cursor_state(move_out: false)

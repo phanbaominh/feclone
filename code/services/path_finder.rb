@@ -25,7 +25,7 @@ class PathFinder < Service
         end
       end
     end
-    paths[center][center] = "#"
+    paths[center][center] = :center
     paths
   end
   
