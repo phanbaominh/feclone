@@ -13,6 +13,11 @@ class Main < Gosu::Window
     @map_handler = MapHandler.new(map: map, cursor: cursor)
   end
 
+  def button_down(id)
+    #if !(res = map_handler.buttons.select{|e| Gosu.const_get(e) == (id)}).empty?
+    #  map_handler.handle_button(res.keys[0])
+    #end
+  end
 
   def update
     map_handler.handle_buttons

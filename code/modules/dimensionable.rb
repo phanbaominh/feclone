@@ -14,4 +14,14 @@ module Dimensionable
   def y_grid
     dms.y_grid
   end
+
+  def dms=(value)
+    @dms.mutate(value)
+    #@ani_stators.dms = value
+  end
+
+  def dms
+    @dms
+  end
+  
 end

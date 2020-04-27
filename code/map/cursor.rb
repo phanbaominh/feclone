@@ -5,8 +5,10 @@ class Cursor
   include Dimensionable
   
   PLAYER_CURSOR_SPRITE = Sprite.load_tiles("assets/map_ui/cursor.png", 32, 32, retro: true)
-  CURSOR_DELAY = 100
+  CURSOR_DELAY = 80
+  CURSOR_MOVE_VALUE = 1
   attr_reader :sprite, :buttons, :timeable, :wait, :ani_stators, :map
+  attr_accessor :step, :sign, :direction
   
   
   def self.map_spr_dms(x: 0, y: 0)
@@ -29,14 +31,37 @@ class Cursor
     @timeable = Timeable.new(last_time: Gosu.milliseconds,
                              wait: CURSOR_DELAY)
     @sprite = sprite
-
+    @step = 1
+    @direction = nil
+    @sign = 1
     setup_ani_stators
   end
   
   def debounced?
+=begin
+    return true if !direction
+    #p step
+    value = CURSOR_MOVE_VALUE * step
+    if value <= 1
+      #p direction
+      send("#{direction}=".to_sym, send(direction) + sign * CURSOR_MOVE_VALUE)
+      self.step += 1
+    end
+    if value == 1
+      self.direction = nil
+      self.step = 1
+      true
+    else
+      false
+    end
+=end
     !timeable.update_time?
   end
 
+  def move(direction, sign)
+    self.direction = direction
+    self.sign = sign
+  end
   def draw
     ani_stators.draw
   end

@@ -25,6 +25,15 @@ class Dimensioner
     [x + x_offset, y + y_offset, z]
   end
 
+  def mutate(value)
+    @x = value.x
+    @y = value.y
+    @x_grid = value.x_grid
+    @y_grid = value.y_grid
+    @z = value.z
+    @x_offset = value.x_offset
+    @y_offset = value.y_offset
+  end
   def ==(other)
     x_grid == other.x_grid && y_grid == other.y_grid
   end

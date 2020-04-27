@@ -106,13 +106,19 @@ class Parent
     p "cha"
   end
 end
-class Son < DelegateClass(Parent)
+module Test1
+  attr_accessor :gay1
+end
+class Son #< DelegateClass(Parent)
+  include Test1
   attr_accessor :dim
   def gay
     super
     p "con"
   end
 end
-son = Son.new(Parent.new(3, 4)).gay
+son = Son.new
 son.dim = 3
+son.gay1 = 3
 p son.dim
+p son.gay1

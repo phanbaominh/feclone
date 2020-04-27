@@ -1,4 +1,4 @@
-require_relative '../modules/buttonable'
+require_relative 'buttonable'
 class MapHandler
   include Buttonable
   attr_accessor :map, :cursor, :buttons, :unit_activated, :current_unit
@@ -28,6 +28,7 @@ class MapHandler
   def pre_handling
     
     !cursor.debounced?
+    
   end
   
   def pre_press(button)
@@ -56,22 +57,27 @@ class MapHandler
   end
 
   def kb_down
-    cursor.y_grid += 1
+    
+    cursor.y_grid += Cursor::CURSOR_MOVE_VALUE
+    #cursor.move(:y_grid, 1)
     change_move_state(move: :down) if unit_activated
   end
 
   def kb_up
-    cursor.y_grid -= 1
+    cursor.y_grid -= Cursor::CURSOR_MOVE_VALUE
+    #cursor.move(:y_grid, -1)
     change_move_state(move: :up) if unit_activated
   end
 
   def kb_right
-    cursor.x_grid += 1
+    cursor.x_grid += Cursor::CURSOR_MOVE_VALUE
+    #cursor.move(:x_grid, 1)
     change_move_state(move: :right) if unit_activated
   end
   
   def kb_left
-    cursor.x_grid -= 1
+    #cursor.move(:x_grid, -1)
+    cursor.x_grid -= Cursor::CURSOR_MOVE_VALUE
     change_move_state(move: :left) if unit_activated
   end
   

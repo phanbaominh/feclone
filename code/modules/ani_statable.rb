@@ -14,13 +14,4 @@ module AniStatable
   def animators=(value)
     @ani_stators.animators = value
   end
-
-  def dms=(value)
-    @dms = value
-    @ani_stators.dms = value
-  end
-
-  def dms
-    @dms
-  end
 end
