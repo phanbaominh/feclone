@@ -61,15 +61,11 @@ class Arrow
   end
   def draw(dimensioner)
     arrow_parts = arrow_exist? ? combined_body_head : []
-    x_grid = dimensioner.x_grid
-    y_grid = dimensioner.y_grid
-    draw_tail(x_grid, y_grid) if tail
+    dms = dimensioner.dup
+    draw_tail(dms.x_grid, dms.y_grid) if tail
     arrow_parts.each do |part|
-      x_grid = x_grid_value(x_grid, part.direction)
-      y_grid = y_grid_value(y_grid, part.direction)
-      real_x = Util.get_real_pos(x_grid)
-      real_y = Util.get_real_pos(y_grid)
-      draw_arrow_part(part.sprite, real_x, real_y)
+      dms = grid_value(dms, part.direction)
+      draw_arrow_part(part.sprite, dms.x, dms.y)
     end
   end
 
@@ -122,17 +118,18 @@ class Arrow
     sprite.draw(x, y, GC::Z_ARROW)
   end
 
-  def x_grid_value(x, move)
-    delta = 0
-    delta = GRID_VALUE[move] if HORIZONTAL.include?(move)
-    x + delta
+  def grid_value(dms, move)
+    delta_x = 0
+    delta_y = 0
+    delta_x = GRID_VALUE[move] if horizontal?(move)
+    delta_y = GRID_VALUE[move] if vertical?(move)
+    Dimensioner.new(
+      x_grid: dms.x_grid + delta_x,
+      y_grid: dms.y_grid + delta_y,
+      z: dms.z
+    )
   end
 
-  def y_grid_value(y, move)
-    delta = 0
-    delta = GRID_VALUE[move] if VERTICAL.include?(move)
-    y + delta
-  end
 
   def horizontal?(move)
     HORIZONTAL.include?(move)
