@@ -32,15 +32,19 @@ module Directionable
     move
   end
 
-  def grid_value(dms, move)
+  def dms_after_move(dms, move: nil, move_value: nil)
     delta_x = 0
     delta_y = 0
-    delta_x = GRID_VALUE[move] if horizontal?(move)
-    delta_y = GRID_VALUE[move] if vertical?(move)
+    move_value ||= GRID_VALUE[move]
+    delta_x = move_value if horizontal?(move)
+    delta_y = move_value if vertical?(move)
+    #p dms
     Dimensioner.new(
       x_grid: dms.x_grid + delta_x,
       y_grid: dms.y_grid + delta_y,
-      z: dms.z
+      z: dms.z,
+      x_offset:  dms.x_offset,
+      y_offset: dms.y_offset,
     )
   end
 

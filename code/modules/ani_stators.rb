@@ -1,4 +1,6 @@
+require_relative 'movable'
 class AniStators
+  include Movable
   attr_accessor :ani_state, :animators, :dms
   
   def build_animator(sprite:, state:, personal_dms: nil, frames_count: 1, times_per_frame: [0], index: 0, delta: 1, reverse: true)
@@ -15,7 +17,7 @@ class AniStators
   def initialize(animators: {}, ani_state:, dms: nil)
     @animators = animators
     @ani_state = ani_state
-    @dms = dms
+    @dms = dms.dup
   end
 
   def draw
@@ -31,6 +33,14 @@ class AniStators
     @dms = value
     animators.values.each {|animator| animator.dms = value}
   end
+
+  def move(direction, speed)
+    self.move_object = Move.new(direction, speed, 1)
+    animators.values.each do |animator|
+      animator.move_object = move_object
+    end
+  end
+
   private
 
   def cur_animator

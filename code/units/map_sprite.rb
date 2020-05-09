@@ -63,6 +63,10 @@ class MapSprite
     self.move_value -= move_cost
   end
 
+  def dms=(value)
+    @dms = value
+    @ani_stators.dms.mutate(value)
+  end
   private
 
   def rebuild_arrow(tile_route, cursor_dms)

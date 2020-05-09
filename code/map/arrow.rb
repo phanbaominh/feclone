@@ -14,13 +14,9 @@ class Arrow
 
   def setup_arrow(move:, dms:)
     self.head_dms = Dimensioner.new(x_grid: dms.x_grid, y_grid: dms.y_grid)
+
     if opposite_direction?(last_move, move)
-      if body.size > 0 
-        last = self.body.pop  
-        self.head = Part.new(head_sprite[last.direction], last.direction) if last.is_corner
-      else 
-        remove_arrow
-      end
+      body.size > 0 ? assign_new_head : remove_arrow
       self.last_move = head ? head.direction : nil
       return
     end
@@ -59,7 +55,7 @@ class Arrow
     dms = dimensioner.dup
     draw_tail(dms.x_grid, dms.y_grid) if tail
     arrow_parts.each do |part|
-      dms = grid_value(dms, part.direction)
+      dms = dms_after_move(dms, move: part.direction)
       draw_arrow_part(part.sprite, dms.x, dms.y)
     end
   end
@@ -69,9 +65,12 @@ class Arrow
     body.size + count_head
   end
 
-  
-
   private
+
+  def assign_new_head
+    last_part = self.body.pop  
+    self.head = Part.new(head_sprite[last_part.direction], last_part.direction) if last_part.is_corner
+  end
 
   def remove_arrow
     self.head = nil

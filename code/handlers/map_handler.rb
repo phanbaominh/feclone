@@ -27,19 +27,22 @@ class MapHandler
   ######################
   def pre_handling
     
-    !cursor.debounced?
-    
+    cursor.ani_stators.finished_moving? && !cursor.debounced?
   end
   
   def pre_press(button)
+    
     if movement_button?(button)
       change_cursor_state(move_out: true)
     end
   end
 
   def post_press(button)
-    if movement_button?(button)
+    if direction = movement_button?(button)
       change_cursor_state
+      #cursor.
+      cursor.ani_stators.move(direction, 4)
+      change_move_state(move: direction) if unit_activated
     end
   end
   
@@ -60,25 +63,25 @@ class MapHandler
     
     cursor.y_grid += Cursor::CURSOR_MOVE_VALUE
     #cursor.move(:y_grid, 1)
-    change_move_state(move: :down) if unit_activated
+    #change_move_state(move: :down) if unit_activated
   end
 
   def kb_up
     cursor.y_grid -= Cursor::CURSOR_MOVE_VALUE
     #cursor.move(:y_grid, -1)
-    change_move_state(move: :up) if unit_activated
+    #change_move_state(move: :up) if unit_activated
   end
 
   def kb_right
     cursor.x_grid += Cursor::CURSOR_MOVE_VALUE
     #cursor.move(:x_grid, 1)
-    change_move_state(move: :right) if unit_activated
+    #change_move_state(move: :right) if unit_activated
   end
   
   def kb_left
     #cursor.move(:x_grid, -1)
     cursor.x_grid -= Cursor::CURSOR_MOVE_VALUE
-    change_move_state(move: :left) if unit_activated
+    #change_move_state(move: :left) if unit_activated
   end
   
   def change_move_state(move:)
