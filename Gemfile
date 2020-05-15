@@ -10,3 +10,4 @@ gem "require_all"
 gem "rmagick"
 gem "mini_magick"
 gem "minitest"
+gem 'pry', '~> 0.12.2'

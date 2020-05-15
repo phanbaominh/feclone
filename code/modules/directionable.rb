@@ -40,11 +40,13 @@ module Directionable
     delta_y = move_value if vertical?(move)
     #p dms
     Dimensioner.new(
+      **{
       x_grid: dms.x_grid + delta_x,
       y_grid: dms.y_grid + delta_y,
       z: dms.z,
       x_offset:  dms.x_offset,
       y_offset: dms.y_offset,
+      }
     )
   end
 

@@ -20,21 +20,26 @@ class MapSprite
                  animatable: true)
     @sprite = Sprite.load_tiles(image_path, 32, 32, retro: true)
     @dms = dimensioner
+    setup_ani_stators
+
     @movable_tiles = nil
     @highlighter_state = :idle
+
     @arrow = Arrow.new
     @move_value = move_value
     @base_move_value = move_value
-    setup_ani_stators
+    
   end
     
   def draw
     ani_stators.draw
+
     movable_tiles.each_with_index do |row, i|
       row.each_with_index do |tile, j|
         Highlighter.draw(const: highlighter_const_name, x_grid: x_grid + (j - highlighter_offset), y_grid: y_grid + (i - highlighter_offset)) if tile
       end
     end if movable_tiles && highlighter_state != :idle
+
     arrow.draw(dms)
   end
 
@@ -116,17 +121,17 @@ class MapSprite
     moving = true
     ANI_STATES.each_with_index do |state, i|
       if !moving || state == :idle
-        build_standing_animator(state, index: i * 4)
+        build_animator(state, index: i * 4)
         moving = false
       else
-        build_moving_animator(state, index: i * 4)
+        build_animator(state, index: i * 4, frames_count: 4, times_per_frame: [150] * 4)
       end
     end
     animators[:active] = animators[:down]
     self.ani_state = :idle
   end
   
-  def build_moving_animator(state, index: 0, frames_count: 4, times_per_frame: [150] * 4)
+  def build_animator(state, index: 4, frames_count: 3, times_per_frame: [500, 50, 500])
     ani_stators.build_animator(
       sprite: sprite,
       state: state,
@@ -135,19 +140,7 @@ class MapSprite
       times_per_frame: times_per_frame
     )
   end
-
-  def build_standing_animator(state, index: 4, frames_count: 3, times_per_frame: [500, 50, 500])
-    ani_stators.build_animator(
-      sprite: sprite,
-      state: state,
-      index: index,
-      frames_count: frames_count, 
-      times_per_frame: times_per_frame
-    )
-  end
-  ####################
-  #DRAWABLE INTERFACE#
-  ####################
+  
 
   
 end
