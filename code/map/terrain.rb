@@ -1,16 +1,18 @@
+# frozen_string_literal: true
+
 class Terrain
   attr_accessor :types, :effect
 
   TERRAIN_TYPES = {
-      plain: {types: {infantry: 1}},
-      hill: {types: {infantry: 3}},
-      forest: {types: {infantry: 2}},
-      cliff: {types: {}},
-      sea: {types: {}},
-      fort: {types: {infantry: 2}},
-      village: {types: {infantry: 1}},
-      default: {types: {}}
-  }
+    plain: { types: { infantry: 1 } },
+    hill: { types: { infantry: 3 } },
+    forest: { types: { infantry: 2 } },
+    cliff: { types: {} },
+    sea: { types: {} },
+    fort: { types: { infantry: 2 } },
+    village: { types: { infantry: 1 } },
+    default: { types: {} }
+  }.freeze
   TERRAIN_COLOR = {
     c98fb98: :plain,
     c228b22: :forest,
@@ -20,7 +22,7 @@ class Terrain
     c00008b: :sea,
     cd0c850: :fort,
     cb00000: :village
-  }
+  }.freeze
 
   def self.get_terrain(name: :default)
     Terrain.new(TERRAIN_TYPES[name])
@@ -40,17 +42,18 @@ class Terrain
   def terrain=(value)
     @terrain = TERRAIN_TYPES[value]
   end
-  
+
   def move_cost(type)
-    types[type] ? types[type] : nil
+    types[type] || nil
   end
+
   private
 
   def default_value(options)
     options[:types] ||= {}
     options[:effect] ||= nil
     options[:name] ||= :default
-    
+
     options
   end
 end

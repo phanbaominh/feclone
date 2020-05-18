@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Timeable
   attr_accessor :last_time, :wait
   def initialize(last_time: Gosu.milliseconds, wait: 0)
@@ -6,7 +8,7 @@ class Timeable
   end
 
   def update_time?
-    (get_time_since_last > wait) ? set_current : false
+    get_time_since_last > wait ? set_current : false
   end
 
   def set_current

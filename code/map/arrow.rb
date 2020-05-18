@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require_relative '../modules/directionable'
 class Arrow
   include Directionable
-  ARROW_SPRITE = Sprite.load_tiles("assets/map_ui/MovementArrows_TRUE.png", 18, 18, retro: true)
+  ARROW_SPRITE = Sprite.load_tiles('assets/map_ui/MovementArrows_TRUE.png', 18, 18, retro: true)
   Part = Struct.new(:sprite, :direction, :is_corner)
 
   attr_accessor :body, :head, :last_move, :tail, :out_of_range, :head_dms
@@ -16,17 +18,17 @@ class Arrow
     self.head_dms = Dimensioner.new(x_grid: dms.x_grid, y_grid: dms.y_grid)
 
     if opposite_direction?(last_move, move)
-      body.size > 0 ? assign_new_head : remove_arrow
+      !empty? ? assign_new_head : remove_arrow
       self.last_move = head ? head.direction : nil
       return
     end
-    self.tail = tail_sprite[move] if !tail
+    self.tail = tail_sprite[move] unless tail
     self.head = Part.new(head_sprite[move], move)
 
-    if last_move == move 
-      self.body << Part.new(body_sprite[last_move], last_move, false)
+    if last_move == move
+      body << Part.new(body_sprite[last_move], last_move, false)
     elsif last_move
-      self.body << Part.new(corner_sprite[corner_direction(last_move, move)], last_move, true)
+      body << Part.new(corner_sprite[corner_direction(last_move, move)], last_move, true)
     end
 
     self.last_move = move
@@ -50,6 +52,7 @@ class Arrow
       prev_dim = tile_dim
     end
   end
+
   def draw(dimensioner)
     arrow_parts = arrow_exist? ? combined_body_head : []
     dms = dimensioner.dup
@@ -65,11 +68,17 @@ class Arrow
     body.size + count_head
   end
 
+  def empty?
+    body.empty?
+  end
+
   private
 
   def assign_new_head
-    last_part = self.body.pop  
-    self.head = Part.new(head_sprite[last_part.direction], last_part.direction) if last_part.is_corner
+    last_part = body.pop
+    if last_part.is_corner
+      self.head = Part.new(head_sprite[last_part.direction], last_part.direction)
+    end
   end
 
   def remove_arrow
@@ -98,35 +107,33 @@ class Arrow
   end
 
   def build_sprites
-    @body_sprite  = {
-        left: ARROW_SPRITE[3],
-        right: ARROW_SPRITE[3],
-        up: ARROW_SPRITE[2],
-        down: ARROW_SPRITE[2]
+    @body_sprite = {
+      left: ARROW_SPRITE[3],
+      right: ARROW_SPRITE[3],
+      up: ARROW_SPRITE[2],
+      down: ARROW_SPRITE[2]
     }
     @head_sprite = {
-        right: ARROW_SPRITE[6],
-        down: ARROW_SPRITE[7],
-        up: ARROW_SPRITE[14],
-        left: ARROW_SPRITE[15]
+      right: ARROW_SPRITE[6],
+      down: ARROW_SPRITE[7],
+      up: ARROW_SPRITE[14],
+      left: ARROW_SPRITE[15]
     }
     @corner_sprite = {
-        up_right: ARROW_SPRITE[4],
-        left_down: ARROW_SPRITE[4],
-        up_left: ARROW_SPRITE[5],
-        right_down: ARROW_SPRITE[5],
-        down_right: ARROW_SPRITE[12],
-        left_up: ARROW_SPRITE[12],
-        down_left: ARROW_SPRITE[13],
-        right_up: ARROW_SPRITE[13]
+      up_right: ARROW_SPRITE[4],
+      left_down: ARROW_SPRITE[4],
+      up_left: ARROW_SPRITE[5],
+      right_down: ARROW_SPRITE[5],
+      down_right: ARROW_SPRITE[12],
+      left_up: ARROW_SPRITE[12],
+      down_left: ARROW_SPRITE[13],
+      right_up: ARROW_SPRITE[13]
     }
     @tail_sprite = {
-        right: ARROW_SPRITE[0],
-        left: ARROW_SPRITE[9],
-        up: ARROW_SPRITE[8],
-        down: ARROW_SPRITE[1]
+      right: ARROW_SPRITE[0],
+      left: ARROW_SPRITE[9],
+      up: ARROW_SPRITE[8],
+      down: ARROW_SPRITE[1]
     }
   end
-
-  
 end

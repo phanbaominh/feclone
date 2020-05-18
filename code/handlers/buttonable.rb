@@ -1,7 +1,10 @@
+# frozen_string_literal: true
+
 module Buttonable
   def handle_buttons
-    return if !pre_handling
-    #TODO: HANDLE 2 buttons press
+    return unless pre_handling
+
+    # TODO: HANDLE 2 buttons press
     buttons.each do |k, _|
       handle_button(k)
     end
@@ -16,20 +19,16 @@ module Buttonable
       post_press(button_value)
     end
   end
-  
-  def pre_press(button)
-  end
 
-  def post_press(button)
-  end
-  
+  def pre_press(button); end
+
+  def post_press(button); end
+
   def pre_handling
     true
   end
 
-  def post_handling
-    
-  end
+  def post_handling; end
 
   def movement_button?(button)
     case button
@@ -44,6 +43,6 @@ module Buttonable
     else
       false
     end
-    #button == Gosu::KB_DOWN || button == Gosu::KB_UP || button == Gosu::KB_RIGHT || button == Gosu::KB_LEFT
+    # button == Gosu::KB_DOWN || button == Gosu::KB_UP || button == Gosu::KB_RIGHT || button == Gosu::KB_LEFT
   end
 end

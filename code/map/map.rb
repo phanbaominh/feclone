@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class Map
   attr_accessor :terrains, :sprite, :tiles
 
   def initialize(
-      image_path: nil,
-      tiles: nil
+    image_path: nil,
+    tiles: nil
   )
     @terrains = TerrainDrawer.perform(Tiler.perform(get_terrain_image_path(image_path), true))
     @sprite = Sprite.new(image_path, retro: true)
@@ -14,12 +16,10 @@ class Map
   def draw
     sprite.draw(0, 0, 0, scale_x: GC::SCALING_FACTOR, scale_y: GC::SCALING_FACTOR)
     tiles.each do |row|
-        row.each do |tile|
-            tile.draw
-        end
+      row.each(&:draw)
     end
   end
-  
+
   def add_unit(x, y, unit)
     tiles[y][x].unit = unit
   end
@@ -27,40 +27,39 @@ class Map
   def unit_present?(x, y)
     tiles[y][x].unit
   end
-  
-  def get_unit(x,y)
+
+  def get_unit(x, y)
     tile[y][x].unit
   end
-  
-  def toogle_highlight(x_src: 0, y_src: 0, movement: nil)
-    
-  end
+
+  def toogle_highlight(x_src: 0, y_src: 0, movement: nil); end
 
   private
 
   def set_up_tiles
     tiles = []
     sprite.height_grid.to_i.times do |i|
-        row = []
-        sprite.width_grid.to_i.times do |j|
-            row << Tile.new(dimensioner: Dimensioner.new(x_grid: j, y_grid: i), terrain: terrains[i][j])
-        end
-        tiles << row
+      row = []
+      sprite.width_grid.to_i.times do |j|
+        row << Tile.new(dimensioner: Dimensioner.new(x_grid: j, y_grid: i),
+                        terrain: terrains[i][j])
+      end
+      tiles << row
     end
     tiles
   end
 
   def test_tiles
     4.times do |i|
-        4.times do |j|
-            unit = Unit.new(image_path: GC::CHARS_PATH.join("map_sprites","eirika.png").to_s)
-            add_unit(4 * j, 2 * i, unit)
-        end
+      4.times do |j|
+        unit = Unit.new(image_path: GC::CHARS_PATH.join('map_sprites', 'eirika.png').to_s)
+        add_unit(4 * j, 2 * i, unit)
+      end
     end
   end
 
   def get_terrain_image_path(image_path)
     parts = image_path.split('.')
-    parts[0] + "_terrain." + parts[1]
+    parts[0] + '_terrain.' + parts[1]
   end
 end

@@ -1,16 +1,17 @@
+# frozen_string_literal: true
+
 require_rel '../modules/dimensionable'
 require_rel '../modules/ani_statable'
 class Cursor
   include AniStatable
   include Dimensionable
-  
-  PLAYER_CURSOR_SPRITE = Sprite.load_tiles("assets/map_ui/cursor.png", 32, 32, retro: true)
+
+  PLAYER_CURSOR_SPRITE = Sprite.load_tiles('assets/map_ui/cursor.png', 32, 32, retro: true)
   CURSOR_DELAY = 100
   CURSOR_MOVE_VALUE = 1
   attr_reader :sprite, :buttons, :timeable, :wait, :ani_stators, :map
   attr_accessor :step, :sign, :direction
-  
-  
+
   def self.map_spr_dms(x: 0, y: 0)
     Dimensioner.new(
       x_grid: x,
@@ -36,7 +37,7 @@ class Cursor
     @sign = 1
     setup_ani_stators
   end
-  
+
   def debounced?
     !timeable.update_time?
   end
@@ -45,9 +46,11 @@ class Cursor
     self.direction = direction
     self.sign = sign
   end
+
   def draw
     ani_stators.draw
   end
+
   private
 
   def setup_ani_stators
@@ -67,11 +70,10 @@ class Cursor
     )
   end
   ######################
-  #BUTTONABLE INTERFACE#
+  # BUTTONABLE INTERFACE#
   ######################
 
-  
   ####################
-  #DRAWABLE INTERFACE#
+  # DRAWABLE INTERFACE#
   ####################
 end

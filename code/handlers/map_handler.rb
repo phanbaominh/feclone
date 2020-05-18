@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'buttonable'
 class MapHandler
   include Buttonable
@@ -6,35 +8,32 @@ class MapHandler
     @map = map
     @cursor = cursor
     @buttons = {
-      KB_DOWN:  true,
-      KB_UP:    true,
+      KB_DOWN: true,
+      KB_UP: true,
       KB_RIGHT: true,
-      KB_LEFT:  true,
+      KB_LEFT: true,
       KB_Z: true,
       KB_X: true
     }
     change_cursor_state
   end
-  
+
   def draw
     cursor.draw
     map.draw
   end
+
   private
 
   ######################
-  #BUTTONABLE INTERFACE#
+  # BUTTONABLE INTERFACE#
   ######################
   def pre_handling
-    
     cursor.ani_stators.finished_moving? && !cursor.debounced?
   end
-  
+
   def pre_press(button)
-    
-    if movement_button?(button)
-      change_cursor_state(move_out: true)
-    end
+    change_cursor_state(move_out: true) if movement_button?(button)
   end
 
   def post_press(button)
@@ -44,7 +43,7 @@ class MapHandler
       change_move_state(move: direction) if unit_activated
     end
   end
-  
+
   def kb_z
     if unit = unit_focused?
       activate_unit(unit)
@@ -69,11 +68,11 @@ class MapHandler
   def kb_right
     cursor.x_grid += Cursor::CURSOR_MOVE_VALUE
   end
-  
+
   def kb_left
     cursor.x_grid -= Cursor::CURSOR_MOVE_VALUE
   end
-  
+
   def change_move_state(move:)
     current_unit.change_move_state(move: move, cursor_terrain: Terrain.get_terrain(name: map.terrains[cursor.y_grid][cursor.x_grid]), cursor_dms: cursor.dms.dup)
   end
@@ -113,7 +112,7 @@ class MapHandler
     self.unit_activated = true
     self.current_unit = unit
     unit.change_sprite_state(state: :active)
-    #p unit.map_sprite.movable_tiles
+    # p unit.map_sprite.movable_tiles
   end
 
   def unit_focused?

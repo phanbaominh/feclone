@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Tile
   attr_accessor :dms
   attr_reader :unit
@@ -10,11 +12,11 @@ class Tile
     fort: Terrain.get_terrain(name: :fort),
     village: Terrain.get_terrain(name: :village),
     default: Terrain.get_terrain(name: :default)
-  }
+  }.freeze
   def initialize(
-      unit: nil,
-      dimensioner: Dimensioner.new,
-      terrain: :default
+    unit: nil,
+    dimensioner: Dimensioner.new,
+    terrain: :default
   )
     @dms = dimensioner
     @terrain = TERRAINS[terrain]
@@ -24,20 +26,20 @@ class Tile
     end
   end
 
-  def unit=(value)  
+  def unit=(value)
     @unit = value
     set_unit_dms
   end
-  
+
   def draw
-    unit.draw if unit
+    unit&.draw
   end
-  
-  
+
   private
 
   def set_unit_dms
-    unit.map_sprite.dms = MapSprite.map_spr_dms(x: dms.x_grid, y: dms.y_grid) if unit
+    if unit
+      unit.map_sprite.dms = MapSprite.map_spr_dms(x: dms.x_grid, y: dms.y_grid)
+    end
   end
-
 end

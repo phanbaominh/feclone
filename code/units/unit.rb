@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class Unit
   include Dimensionable
   attr_accessor :map_sprite, :name, :movement
-  
+
   def initialize(
     name: nil,
     dimensioner: MapSprite.map_spr_dms,
@@ -20,9 +22,9 @@ class Unit
   def draw
     map_sprite.draw
   end
-  
+
   def get_placeholder_name
-    "Name" + map_sprite.dms.x_grid.to_s + map_sprite.dms.y_grid.to_s
+    'Name' + map_sprite.dms.x_grid.to_s + map_sprite.dms.y_grid.to_s
   end
 
   def inspect
@@ -45,7 +47,7 @@ class Unit
     change_ani_state(state: state)
     change_highlighter_state(state: state)
   end
-  
+
   def change_move_state(move:, cursor_terrain:, cursor_dms:)
     move_cost = cursor_terrain.move_cost(movement.type)
     map_sprite.change_move_state(move, cursor_dms, move_cost)
@@ -62,6 +64,6 @@ class Unit
   end
 
   def add_moveable_tiles(moveable_tiles:)
-    map_sprite.movable_tiles = moveable_tiles if !map_sprite.movable_tiles
+    map_sprite.movable_tiles = moveable_tiles unless map_sprite.movable_tiles
   end
 end

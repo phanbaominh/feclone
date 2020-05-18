@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Dimensioner
   attr_accessor :x, :y, :z
   attr_reader :x_grid, :y_grid, :x_offset, :y_offset
@@ -15,7 +17,7 @@ class Dimensioner
     self.x = real(value)
     @x_grid = value
   end
-  
+
   def y_grid=(value)
     self.y = real(value)
     @y_grid = value
@@ -34,12 +36,14 @@ class Dimensioner
     @x_offset = value.x_offset
     @y_offset = value.y_offset
   end
+
   def ==(other)
     x_grid == other.x_grid && y_grid == other.y_grid
   end
+
   private
 
   def real(dimension)
     dimension * GC::GRID_SIZE
-  end 
+  end
 end

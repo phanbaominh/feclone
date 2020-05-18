@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Dimensionable
   def x_grid=(value)
     dms.x_grid = value
@@ -6,7 +8,7 @@ module Dimensionable
   def y_grid=(value)
     dms.y_grid = value
   end
-  
+
   def x_grid
     dms.x_grid
   end
@@ -17,11 +19,10 @@ module Dimensionable
 
   def dms=(value)
     @dms.mutate(value)
-    #@ani_stators.dms = value
+    # @ani_stators.dms = value
   end
 
   def dms
     @dms
   end
-  
 end

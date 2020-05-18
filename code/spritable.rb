@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'gosu'
 module Spritable
   def draw(x = nil, y = nil, z = nil, scale_x: GC::SCALING_FACTOR, scale_y: GC::SCALING_FACTOR)

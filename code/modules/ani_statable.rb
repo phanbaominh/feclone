@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module AniStatable
   def ani_state
     @ani_stators.ani_state

@@ -1,18 +1,19 @@
+# frozen_string_literal: true
+
 require_relative 'movable'
 class AniStators
   include Movable
   attr_accessor :ani_state, :animators, :dms
-  
+
   def build_animator(sprite:, state:, personal_dms: nil, frames_count: 1, times_per_frame: [0], index: 0, delta: 1, reverse: true)
     animator = Animator.new(
       sprite: build_sprite(sprite, frames_count, index, delta),
       times_per_frame: times_per_frame,
       reverse: reverse,
-      dms: personal_dms ? personal_dms : dms
+      dms: personal_dms || dms
     )
     animators[state] = animator
   end
-
 
   def initialize(animators: {}, ani_state:, dms: nil)
     @animators = animators
@@ -31,7 +32,7 @@ class AniStators
 
   def dms=(value)
     @dms = value
-    animators.values.each {|animator| animator.dms = value}
+    animators.values.each { |animator| animator.dms = value }
   end
 
   def move(direction, speed)
@@ -46,14 +47,13 @@ class AniStators
   def cur_animator
     animators[ani_state]
   end
-  
+
   def build_sprite(sprite, frames_count, index, delta)
     result = []
     frames_count.times do
-        result << sprite[index]
-        index += delta
+      result << sprite[index]
+      index += delta
     end
     result
   end
-
 end

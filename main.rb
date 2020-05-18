@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 require 'bundler/setup'
-#require 'awesome_print'
+# require 'awesome_print'
 require_relative 'code/spritable.rb'
 Bundler.require(:default)
 require_rel 'code'
@@ -9,7 +11,7 @@ class Main < Gosu::Window
   def initialize
     super GC::GBA_SCREEN_WIDTH * GC::SCALING_FACTOR,
           GC::GBA_SCREEN_HEIGHT * GC::SCALING_FACTOR
-    map = Map.new(image_path: "assets/map/test.png")
+    map = Map.new(image_path: 'assets/map/test.png')
     cursor = Cursor.new(map: map)
     @map_handler = MapHandler.new(map: map, cursor: cursor)
   end
@@ -17,11 +19,11 @@ class Main < Gosu::Window
   def button_down(id)
     if Gosu::KB_T == id
       binding.pry
-      p "Resumed"
+      p 'Resumed'
     end
-    #if !(res = map_handler.buttons.select{|e| Gosu.const_get(e) == (id)}).empty?
+    # if !(res = map_handler.buttons.select{|e| Gosu.const_get(e) == (id)}).empty?
     #  map_handler.handle_button(res.keys[0])
-    #end
+    # end
   end
 
   def update

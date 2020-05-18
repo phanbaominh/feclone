@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Movement
   attr_accessor :value, :type
   @@movement_types = [:infantry]
@@ -5,5 +7,4 @@ class Movement
     @value = value
     @type  = type
   end
-
 end
