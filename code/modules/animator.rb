@@ -12,6 +12,7 @@ class Animator
     @times_per_frame = times_per_frame
     @timeable = Timeable.new(wait: times_per_frame[0])
     @current_frame = 0
+    @reverse = reverse
     @delta = 1
   end
 
@@ -45,5 +46,5 @@ class Animator
     end
     self.delta = 1 if current_frame < 0
     self.current_frame += delta
- end
+  end
 end

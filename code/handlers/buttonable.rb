@@ -2,7 +2,7 @@
 
 module Buttonable
   def handle_buttons
-    return unless pre_handling
+    return post_handling unless pre_handling
 
     # TODO: HANDLE 2 buttons press
     buttons.each do |k, _|
