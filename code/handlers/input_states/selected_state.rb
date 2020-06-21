@@ -67,7 +67,7 @@ class SelectedState < InputState
   end
 
   def deactivate_unit
-    current_unit.change_sprite_state(state: :hover)
+    change_unit_sprite_state(current_unit, :hover)
     arrow_drawer.arrow.clear
     self.next_state = :idle
     self.current_unit = nil

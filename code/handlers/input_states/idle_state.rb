@@ -18,12 +18,13 @@ class IdleState < InputState
   def change_cursor_state(move_out: false)
     unit = unit_focused?
     if unit && move_out
-      unit.change_sprite_state(state: :idle)
+      change_unit_sprite_state(unit, :idle)
       cursor.ani_state = :idle
     elsif unit && cursor.ani_state == :idle
       unit.add_moveable_tiles(moveable_tiles: PathFinder.perform(map.terrains, unit.dms, unit.movement))
       cursor.ani_state = :hover
-      unit.change_sprite_state(state: :hover)
+      highlighter_drawer.bind_unit(unit: unit)
+      change_unit_sprite_state(unit, :hover)
     elsif !unit && cursor.ani_state == :hover
       cursor.ani_state = :idle
     end
@@ -48,8 +49,8 @@ class IdleState < InputState
   def kb_z
     if (unit = unit_focused?)
       self.next_state = :selected
-      unit.change_sprite_state(state: :active)
-      arrow_drawer.bind_arrow(unit: unit)
+      change_unit_sprite_state(unit, :active)
+      arrow_drawer.bind_unit(unit: unit)
     end
   end
 

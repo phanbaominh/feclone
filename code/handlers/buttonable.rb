@@ -15,7 +15,7 @@ module Buttonable
     button_value = Gosu.const_get(button)
     if Gosu.button_down? button_value
       pre_press(button_value)
-      send(button.downcase)
+      send(button.downcase) if respond_to?(button.downcase)
       post_press(button_value)
     end
   end

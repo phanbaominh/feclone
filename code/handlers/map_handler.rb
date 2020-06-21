@@ -3,11 +3,12 @@
 class MapHandler
   # include Buttonable
   attr_accessor :map, :cursor, :buttons, :unit_activated, :current_unit, :input_state, :input_states
-  attr_reader :arrow_drawer
+  attr_reader :arrow_drawer, :highlighter_drawer
   def initialize(map: nil, cursor: nil)
     @map = map
     @cursor = cursor
     @arrow_drawer = ArrowDrawer.new
+    @highlighter_drawer = HighlighterDrawer.new
     @buttons = {
       KB_DOWN: true,
       KB_UP: true,
@@ -27,6 +28,7 @@ class MapHandler
     cursor.draw
     map.draw
     arrow_drawer.draw
+    highlighter_drawer.draw
   end
 
   def handle_buttons
@@ -39,7 +41,8 @@ class MapHandler
     state.new(
       map: map,
       cursor: cursor,
-      arrow_drawer: arrow_drawer
+      arrow_drawer: arrow_drawer,
+      highlighter_drawer: highlighter_drawer
     )
   end
   ######################

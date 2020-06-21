@@ -16,8 +16,8 @@ class MapSprite
     )
   end
 
-  def initialize(dimensioner: MapSprite.default_map_spr_dms,
-                 image_path: nil,
+  def initialize(dimensioner:,
+                 image_path:,
                  animatable: true)
     @sprite = Sprite.load_tiles(image_path, 32, 32, retro: true)
     @dms = dimensioner
@@ -28,19 +28,6 @@ class MapSprite
 
   def draw
     ani_stators.draw
-    return unless movable_tiles && highlighter_state != :idle
-
-    movable_tiles.each_with_index do |row, i|
-      row.each_with_index do |movable_tile, j|
-        next unless movable_tile
-
-        Highlighter.draw(
-          const: highlighter_const_name,
-          x_grid: x_grid + (j - highlighter_offset),
-          y_grid: y_grid + (i - highlighter_offset)
-        )
-      end
-    end
   end
 
   def dms=(value)
@@ -49,10 +36,6 @@ class MapSprite
   end
 
   private
-
-  def highlighter_const_name
-    "#{highlighter_state.upcase}_BLUE_HIGHLIGHTER"
-  end
 
   def setup_ani_stators
     @ani_stators = AniStators.new(ani_state: :idle, dms: dms)

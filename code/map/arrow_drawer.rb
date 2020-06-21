@@ -39,7 +39,7 @@ class ArrowDrawer
     self.move_value -= move_cost
   end
 
-  def bind_arrow(
+  def bind_unit(
       unit:
   )
     arrow.clear

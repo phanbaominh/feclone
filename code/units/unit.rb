@@ -44,7 +44,6 @@ class Unit
 
   def change_sprite_state(state:)
     change_ani_state(state: state)
-    change_highlighter_state(state: state)
   end
 
   def clear_arrow
