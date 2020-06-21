@@ -13,7 +13,6 @@ class Unit
     @map_sprite = MapSprite.new(
       dimensioner: dimensioner,
       image_path: image_path,
-      move_value: movement.value
     )
     @name = name
     @movement = movement
@@ -46,11 +45,6 @@ class Unit
   def change_sprite_state(state:)
     change_ani_state(state: state)
     change_highlighter_state(state: state)
-  end
-
-  def change_move_state(move:, cursor_terrain:, cursor_dms:)
-    move_cost = cursor_terrain.move_cost(movement.type)
-    map_sprite.change_move_state(move, cursor_dms, move_cost)
   end
 
   def clear_arrow

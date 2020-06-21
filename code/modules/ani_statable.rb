@@ -16,4 +16,9 @@ module AniStatable
   def animators=(value)
     @ani_stators.animators = value
   end
+
+  def rebind_dms
+    @ani_stators.dms.x_grid = x_grid
+    @ani_stators.dms.y_grid = y_grid
+  end
 end

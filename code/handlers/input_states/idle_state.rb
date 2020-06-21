@@ -9,7 +9,7 @@ class IdleState < InputState
   end
 
   def post_press(button)
-    if direction = movement_button?(button)
+    if (direction = movement_button?(button))
       change_cursor_state
       cursor.ani_stators.move(direction, 4)
     end
@@ -49,6 +49,7 @@ class IdleState < InputState
     if (unit = unit_focused?)
       self.next_state = :selected
       unit.change_sprite_state(state: :active)
+      arrow_drawer.bind_arrow(unit: unit)
     end
   end
 

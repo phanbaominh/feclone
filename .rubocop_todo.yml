@@ -14,15 +14,8 @@
 
 # Offense count: 2
 # Configuration parameters: AllowSafeAssignment.
-Lint/AssignmentInCondition:
-  Exclude:
-    - 'code/handlers/input_states/idle_state.rb'
-    - 'code/handlers/input_states/selected_state.rb'
 
 # Offense count: 1
-Lint/CircularArgumentReference:
-  Exclude:
-    - 'code/units/unit.rb'
 
 # Offense count: 1
 Lint/Debugger:
@@ -58,7 +51,7 @@ Metrics/AbcSize:
 # Offense count: 2
 # Configuration parameters: CountComments.
 Metrics/ClassLength:
-  Max: 120
+  Max: 125
 
 # Offense count: 4
 # Configuration parameters: IgnoredMethods.

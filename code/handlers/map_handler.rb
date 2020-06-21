@@ -3,9 +3,11 @@
 class MapHandler
   # include Buttonable
   attr_accessor :map, :cursor, :buttons, :unit_activated, :current_unit, :input_state, :input_states
+  attr_reader :arrow_drawer
   def initialize(map: nil, cursor: nil)
     @map = map
     @cursor = cursor
+    @arrow_drawer = ArrowDrawer.new
     @buttons = {
       KB_DOWN: true,
       KB_UP: true,
@@ -16,20 +18,30 @@ class MapHandler
     }
     @input_state = :idle
     @input_states = {
-      idle: IdleState.new(map: map, cursor: cursor),
-      selected: SelectedState.new(map: map, cursor: cursor)
+      idle: new_input_state(IdleState),
+      selected: new_input_state(SelectedState)
     }
   end
 
   def draw
     cursor.draw
     map.draw
+    arrow_drawer.draw
   end
 
   def handle_buttons
     self.input_state = input_states[input_state].handle_buttons
   end
 
+  private
+
+  def new_input_state(state)
+    state.new(
+      map: map,
+      cursor: cursor,
+      arrow_drawer: arrow_drawer
+    )
+  end
   ######################
   # BUTTONABLE INTERFACE#
   ######################

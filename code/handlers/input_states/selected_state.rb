@@ -10,7 +10,7 @@ class SelectedState < InputState
   end
 
   def post_press(button)
-    if direction = movement_button?(button)
+    if (direction = movement_button?(button))
       change_cursor_state
       cursor.ani_stators.move(direction, 4)
       change_move_state(move: direction)
@@ -41,13 +41,17 @@ class SelectedState < InputState
 
   def kb_x
     rehover_cursor
-    unactivate_unit
+    deactivate_unit
   end
 
   private
 
   def change_move_state(move:)
-    current_unit.change_move_state(move: move, cursor_terrain: Terrain.get_terrain(name: map.terrains[cursor.y_grid][cursor.x_grid]), cursor_dms: cursor.dms.dup)
+    arrow_drawer.change_move_state(
+      move: move,
+      cursor: cursor,
+      cursor_terrain: Terrain.get_terrain(name: map.terrains[cursor.y_grid][cursor.x_grid])
+    )
   end
 
   def set_current_state
@@ -58,12 +62,13 @@ class SelectedState < InputState
   def rehover_cursor
     cursor.x_grid = current_unit.x_grid
     cursor.y_grid = current_unit.y_grid
+    cursor.rebind_dms
     cursor.ani_state = :hover
   end
 
-  def unactivate_unit
+  def deactivate_unit
     current_unit.change_sprite_state(state: :hover)
-    current_unit.clear_arrow
+    arrow_drawer.arrow.clear
     self.next_state = :idle
     self.current_unit = nil
   end
