@@ -23,7 +23,7 @@ class Dimensioner
     @y_grid = value
   end
 
-  def get_3d
+  def xyz
     [x + x_offset, y + y_offset, z]
   end
 

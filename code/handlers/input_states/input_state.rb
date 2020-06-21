@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class InputState
   include Buttonable
   attr_accessor :map, :cursor, :buttons, :next_state, :current_state, :arrow_drawer

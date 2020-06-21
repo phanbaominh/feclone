@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class HighlighterDrawer
   attr_reader :map_sprite, :move_value
   attr_accessor :state

@@ -27,7 +27,7 @@ class ArrowDrawer
     if cursor_in_range_after_oor?
       arrow.out_of_range = false
       move_cost = 999
-      return if cursor_back_to_origin_before_oor?(cursor_dms)
+      return if cursor_back_to_head?(cursor_dms)
     end
 
     if out_of_move?(move_cost)
@@ -40,7 +40,7 @@ class ArrowDrawer
   end
 
   def bind_unit(
-      unit:
+    unit:
   )
     arrow.clear
     @map_sprite = unit.map_sprite
@@ -73,7 +73,7 @@ class ArrowDrawer
     arrow.out_of_range
   end
 
-  def cursor_back_to_origin_before_oor?(cursor_dms)
+  def cursor_back_to_head?(cursor_dms)
     arrow.head_dms == cursor_dms
   end
 

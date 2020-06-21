@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'input_state'
 class IdleState < InputState
   def pre_handling
@@ -5,7 +7,9 @@ class IdleState < InputState
   end
 
   def pre_press(button)
-    change_cursor_state(move_out: true) if movement_button?(button)
+    return unless movement_button?(button)
+
+    change_cursor_state(move_out: true)
   end
 
   def post_press(button)
@@ -47,11 +51,11 @@ class IdleState < InputState
   end
 
   def kb_z
-    if (unit = unit_focused?)
-      self.next_state = :selected
-      change_unit_sprite_state(unit, :active)
-      arrow_drawer.bind_unit(unit: unit)
-    end
+    return unless (unit = unit_focused?)
+
+    self.next_state = :selected
+    change_unit_sprite_state(unit, :active)
+    arrow_drawer.bind_unit(unit: unit)
   end
 
   private

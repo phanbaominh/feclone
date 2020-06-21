@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SelectedState < InputState
   attr_accessor :current_unit
   def pre_handling
@@ -6,7 +8,9 @@ class SelectedState < InputState
   end
 
   def pre_press(button)
-    change_cursor_state(move_out: true) if movement_button?(button)
+    return unless movement_button?(button)
+
+    change_cursor_state
   end
 
   def post_press(button)
@@ -17,7 +21,7 @@ class SelectedState < InputState
     end
   end
 
-  def change_cursor_state(move_out: false)
+  def change_cursor_state
     cursor.ani_state = :idle
   end
 

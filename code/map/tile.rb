@@ -20,10 +20,10 @@ class Tile
   )
     @dms = dimensioner
     @terrain = TERRAINS[terrain]
-    if unit
-      @unit = unit
-      set_unit_dms
-    end
+    return unless unit
+
+    @unit = unit
+    set_unit_dms
   end
 
   def unit=(value)
@@ -38,8 +38,8 @@ class Tile
   private
 
   def set_unit_dms
-    if unit
-      unit.map_sprite.dms = MapSprite.map_spr_dms(x: dms.x_grid, y: dms.y_grid)
-    end
+    return unless unit
+
+    unit.map_sprite.dms = MapSprite.map_spr_dms(x: dms.x_grid, y: dms.y_grid)
   end
 end

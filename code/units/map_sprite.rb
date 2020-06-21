@@ -21,7 +21,7 @@ class MapSprite
                  animatable: true)
     @sprite = Sprite.load_tiles(image_path, 32, 32, retro: true)
     @dms = dimensioner
-    setup_ani_stators
+    setup_ani_stators if animatable
     @movable_tiles = nil
     @highlighter_state = :idle
   end

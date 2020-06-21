@@ -16,7 +16,7 @@ class Animator
     @delta = 1
   end
 
-  def get_frame
+  def current_frame_sprite
     if timeable.update_time?
       update_current
       timeable.wait = times_per_frame[current_frame]
@@ -25,12 +25,12 @@ class Animator
   end
 
   def reset_frame
-    current_frame = 0
+    self.current_frame = 0
     timeable.set_current
   end
 
-  def draw(_x = nil, _y = nil, _z = nil)
-    get_frame.draw
+  def draw
+    current_frame_sprite.draw
   end
 
   def dms=(value)
@@ -44,7 +44,7 @@ class Animator
     if current_frame >= sprite.size - 1
       reverse ? self.delta = -1 : self.current_frame = -1
     end
-    self.delta = 1 if current_frame < 0
+    self.delta = 1 if current_frame.negative?
     self.current_frame += delta
   end
 end

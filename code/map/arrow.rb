@@ -76,9 +76,9 @@ class Arrow
 
   def assign_new_head
     last_part = body.pop
-    if last_part.is_corner
-      self.head = Part.new(head_sprite[last_part.direction], last_part.direction)
-    end
+    return unless last_part.is_corner
+
+    self.head = Part.new(head_sprite[last_part.direction], last_part.direction)
   end
 
   def remove_arrow

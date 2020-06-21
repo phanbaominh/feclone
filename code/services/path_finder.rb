@@ -20,11 +20,8 @@ class PathFinder < Service
   def perform
     # puts Util.prettify(move_costs)
     move_costs.each_with_index do |row, i|
-      path_row = []
       row.each_with_index do |_, j|
-        unless paths[i][j]
-          find_path(move_costs, movement.value, movement.value, i, j, movement.value)
-        end
+        find_path(move_costs, movement.value, movement.value, i, j, movement.value) unless paths[i][j]
       end
     end
     paths[center][center] = :center
@@ -38,13 +35,12 @@ class PathFinder < Service
       row.each_with_index do |_tile, j|
         offset_i = y + i - center
         offset_j = x + j - center
-        if offset_i < 0 || offset_j < 0 || offset_i >= terrains.size || offset_j >= terrains[0].size
-          next
-        end
+        next if offset_i.negative? || offset_j.negative? || offset_i >= terrains.size || offset_j >= terrains[0].size
+        next unless dist(center, center, i, j) <= movement.value
 
-        if dist(center, center, i, j) <= movement.value
-          move_costs[i][j] = Terrain.get_terrain(name: terrains[offset_i][offset_j]).move_cost(movement.type)
-        end
+        terrain_name = terrains[offset_i][offset_j]
+        terrain = Terrain.get_terrain(name: terrain_name)
+        move_costs[i][j] = terrain.move_cost(movement.type)
       end
     end
   end
@@ -56,9 +52,7 @@ class PathFinder < Service
   def find_path(arr, srcx, srcy, curx, cury, move)
     return nil if !tile_traversable?(arr, curx, cury) || out_of_move_cost?(move)
     return [] if reached_src_tile?(srcx, srcy, curx, cury, move)
-    if subpath_already_found_and_traversible?(curx, cury, move)
-      return paths[curx][cury].dup
-    end
+    return paths[curx][cury].dup  if subpath_already_found_and_traversible?(curx, cury, move)
 
     next_tiles = sorted_next_tiles_on_distance(arr, srcx, srcy, curx, cury)
     result = nil
@@ -68,9 +62,7 @@ class PathFinder < Service
       result = find_path(arr, srcx, srcy, tile[0], tile[1], move - current_move_cost)
       arr[curx][cury] = current_move_cost
 
-      if result
-        return assign_result_to_paths(result, curx, cury, current_move_cost, move)
-      end
+      return assign_result_to_paths(result, curx, cury, current_move_cost, move) if result
     end
     result
   end
@@ -80,7 +72,7 @@ class PathFinder < Service
   end
 
   def out_of_move_cost?(move)
-    move < 0
+    move.negative?
   end
 
   def tile_traversable?(arr, x, y)
@@ -98,9 +90,11 @@ class PathFinder < Service
     4.times do |i|
       x = curx + xa[i]
       y = cury + ya[i]
+      # rubocop:disable Style/IfUnlessModifier
       if x >= 0 && y >= 0 && x < arr[0].size && y < arr.size && arr[x][y]
         next_tiles << [x, y, dist(srcx, srcy, x, y)]
       end
+      # rubocop:enable Style/IfUnlessModifier
     end
 
     next_tiles = next_tiles.sort { |a, b| a[2] <=> b[2] }

@@ -12,7 +12,7 @@ class Unit
   )
     @map_sprite = MapSprite.new(
       dimensioner: dimensioner,
-      image_path: image_path,
+      image_path: image_path
     )
     @name = name
     @movement = movement
@@ -22,16 +22,16 @@ class Unit
     map_sprite.draw
   end
 
-  def get_placeholder_name
+  def placeholder_name
     'Name' + map_sprite.dms.x_grid.to_s + map_sprite.dms.y_grid.to_s
   end
 
   def inspect
-    name || get_placeholder_name
+    name || placeholder_name
   end
 
   def to_s
-    name || get_placeholder_name
+    name || placeholder_name
   end
 
   def dms

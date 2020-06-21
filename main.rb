@@ -17,10 +17,10 @@ class Main < Gosu::Window
   end
 
   def button_down(id)
-    if Gosu::KB_T == id
-      binding.pry
-      p 'Resumed'
-    end
+    return unless Gosu::KB_T == id
+
+    binding.pry
+    p 'Resumed'
     # if !(res = map_handler.buttons.select{|e| Gosu.const_get(e) == (id)}).empty?
     #  map_handler.handle_button(res.keys[0])
     # end

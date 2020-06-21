@@ -13,11 +13,11 @@ module Buttonable
 
   def handle_button(button)
     button_value = Gosu.const_get(button)
-    if Gosu.button_down? button_value
-      pre_press(button_value)
-      send(button.downcase) if respond_to?(button.downcase)
-      post_press(button_value)
-    end
+    return unless Gosu.button_down? button_value
+
+    pre_press(button_value)
+    send(button.downcase) if respond_to?(button.downcase)
+    post_press(button_value)
   end
 
   def pre_press(button); end

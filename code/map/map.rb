@@ -4,8 +4,7 @@ class Map
   attr_accessor :terrains, :sprite, :tiles
 
   def initialize(
-    image_path: nil,
-    tiles: nil
+    image_path:
   )
     @terrains = TerrainDrawer.perform(Tiler.perform(get_terrain_image_path(image_path), true))
     @sprite = Sprite.new(image_path, retro: true)

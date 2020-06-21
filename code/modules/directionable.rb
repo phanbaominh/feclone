@@ -26,9 +26,9 @@ module Directionable
     end
 
     move = if delta_x != 0
-             delta_x > 0 ? :right : :left
+             delta_x.positive? ? :right : :left
            else
-             delta_y > 0 ? :down : :up
+             delta_y.positive? ? :down : :up
            end
     move
   end

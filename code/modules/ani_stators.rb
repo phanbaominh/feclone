@@ -3,7 +3,8 @@
 require_relative 'movable'
 class AniStators
   include Movable
-  attr_accessor :ani_state, :animators, :dms
+  attr_accessor :animators
+  attr_reader :ani_state, :dms
 
   def build_animator(sprite:, state:, personal_dms: nil, frames_count: 1, times_per_frame: [0], index: 0, delta: 1, reverse: true)
     animator = Animator.new(
