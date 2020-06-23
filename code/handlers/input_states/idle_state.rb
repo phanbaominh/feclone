@@ -13,10 +13,10 @@ class IdleState < InputState
   end
 
   def post_press(button)
-    if (direction = movement_button?(button))
-      change_cursor_state
-      cursor.ani_stators.move(direction, 4)
-    end
+    return unless (direction = movement_button?(button))
+
+    change_cursor_state
+    cursor.ani_stators.move(direction, 4)
   end
 
   def change_cursor_state(move_out: false)
@@ -25,7 +25,11 @@ class IdleState < InputState
       change_unit_sprite_state(unit, :idle)
       cursor.ani_state = :idle
     elsif unit && cursor.ani_state == :idle
-      unit.add_moveable_tiles(moveable_tiles: PathFinder.perform(map.terrains, unit.dms, unit.movement))
+      unit.add_moveable_tiles(
+        moveable_tiles: PathFinder.perform(
+          map.terrains, unit.dms, unit.movement
+        )
+      )
       cursor.ani_state = :hover
       highlighter_drawer.bind_unit(unit: unit)
       change_unit_sprite_state(unit, :hover)

@@ -2,7 +2,8 @@
 
 class InputState
   include Buttonable
-  attr_accessor :map, :cursor, :buttons, :next_state, :current_state, :arrow_drawer
+  attr_accessor :map, :cursor, :buttons,
+                :next_state, :current_state, :arrow_drawer
   attr_reader :highlighter_drawer
   def initialize(map:, cursor:, arrow_drawer:, highlighter_drawer:)
     @map = map

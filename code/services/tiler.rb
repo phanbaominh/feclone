@@ -24,5 +24,3 @@ class Tiler < Service
     result
   end
 end
-
-# Tiler.new(file_path: Pathname.new("test.png"), width: 64, height: 64).perform.each_with_index{|pic, index| pic.write("pic1_#{index}.png")}

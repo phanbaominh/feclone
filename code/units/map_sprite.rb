@@ -3,7 +3,8 @@
 class MapSprite
   include AniStatable
   include Dimensionable
-  attr_accessor :movable_tiles, :highlighter_state, :highlighter_offset, :move_value
+  attr_accessor :movable_tiles, :highlighter_state,
+                :highlighter_offset, :move_value
   attr_reader :base_move_value, :sprite, :ani_stators, :arrow
   ANI_STATES = %i[left right down up idle wait hover].freeze
   def self.map_spr_dms(x: 0, y: 0)
@@ -45,14 +46,18 @@ class MapSprite
         build_animator(state, index: i * 4)
         moving = false
       else
-        build_animator(state, index: i * 4, frames_count: 4, times_per_frame: [150] * 4)
+        build_animator(
+          state, index: i * 4, frames_count: 4, times_per_frame: [150] * 4
+        )
       end
     end
     animators[:active] = animators[:down]
     self.ani_state = :idle
   end
 
-  def build_animator(state, index: 4, frames_count: 3, times_per_frame: [500, 50, 500])
+  def build_animator(
+    state, index: 4, frames_count: 3, times_per_frame: [500, 50, 500]
+  )
     ani_stators.build_animator(
       sprite: sprite,
       state: state,

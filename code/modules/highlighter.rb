@@ -12,6 +12,13 @@ module Highlighter
     highlighter.dms = dms
     highlighter.draw
   end
-  ACTIVE_BLUE_HIGHLIGHTER = build_highlighter(sprite: Sprite.load_tiles('assets/map_ui/highlights/BlueHighlight.png', 16, 16, retro: true))
-  HOVER_BLUE_HIGHLIGHTER = build_highlighter(sprite: Sprite.load_tiles('assets/map_ui/highlights/LightBlueHighlight.png', 16, 16, retro: true))
+
+  ACTIVE_BLUE_HLT_PATH = 'assets/map_ui/highlights/BlueHighlight.png'
+  HOVER_BLUE_HLT_PATH = 'assets/map_ui/highlights/LightBlueHighlight.png'
+  ACTIVE_BLUE_HIGHLIGHTER = build_highlighter(
+    sprite: Sprite.load_tiles(ACTIVE_BLUE_HLT_PATH, 16, 16, retro: true)
+  )
+  HOVER_BLUE_HIGHLIGHTER = build_highlighter(
+    sprite: Sprite.load_tiles(HOVER_BLUE_HLT_PATH, 16, 16, retro: true)
+  )
 end

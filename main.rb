@@ -21,9 +21,6 @@ class Main < Gosu::Window
 
     binding.pry
     p 'Resumed'
-    # if !(res = map_handler.buttons.select{|e| Gosu.const_get(e) == (id)}).empty?
-    #  map_handler.handle_button(res.keys[0])
-    # end
   end
 
   def update

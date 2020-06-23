@@ -3,7 +3,14 @@
 class Dimensioner
   attr_accessor :x, :y, :z
   attr_reader :x_grid, :y_grid, :x_offset, :y_offset
-  def initialize(x: nil, y: nil, x_grid: 0, y_grid: 0, z: 0, x_offset: 0, y_offset: 0)
+  # rubocop:disable Metrics/AbcSize
+  def initialize(**options)
+    x, y, z, x_grid, y_grid, x_offset, y_offset =
+      default_options
+      .merge(options)
+      .values_at(
+        :x, :y, :z, :x_grid, :y_grid, :x_offset, :y_offset
+      )
     @x_grid = x_grid
     @y_grid = y_grid
     @x = x || real(x_grid) || 0
@@ -13,6 +20,7 @@ class Dimensioner
     @y_offset = y_offset
   end
 
+  # rubocop:enable Metrics/AbcSize
   def x_grid=(value)
     self.x = real(value)
     @x_grid = value
@@ -42,6 +50,10 @@ class Dimensioner
   end
 
   private
+
+  def default_options
+    { x: nil, y: nil, x_grid: 0, y_grid: 0, z: 0, x_offset: 0, y_offset: 0 }
+  end
 
   def real(dimension)
     dimension * GC::GRID_SIZE

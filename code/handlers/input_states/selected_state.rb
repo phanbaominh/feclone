@@ -14,11 +14,11 @@ class SelectedState < InputState
   end
 
   def post_press(button)
-    if (direction = movement_button?(button))
-      change_cursor_state
-      cursor.ani_stators.move(direction, 4)
-      change_move_state(move: direction)
-    end
+    return unless (direction = movement_button?(button))
+
+    change_cursor_state
+    cursor.ani_stators.move(direction, 4)
+    change_move_state(move: direction)
   end
 
   def change_cursor_state
@@ -54,7 +54,9 @@ class SelectedState < InputState
     arrow_drawer.change_move_state(
       move: move,
       cursor: cursor,
-      cursor_terrain: Terrain.get_terrain(name: map.terrains[cursor.y_grid][cursor.x_grid])
+      cursor_terrain: Terrain.get_terrain(
+        name: map.terrains[cursor.y_grid][cursor.x_grid]
+      )
     )
   end
 

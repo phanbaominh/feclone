@@ -1,22 +1,14 @@
 # frozen_string_literal: true
 
 class MapHandler
-  # include Buttonable
-  attr_accessor :map, :cursor, :buttons, :unit_activated, :current_unit, :input_state, :input_states
+  attr_accessor :map, :cursor, :buttons, :unit_activated,
+                :current_unit, :input_state, :input_states
   attr_reader :arrow_drawer, :highlighter_drawer
   def initialize(map: nil, cursor: nil)
     @map = map
     @cursor = cursor
     @arrow_drawer = ArrowDrawer.new
     @highlighter_drawer = HighlighterDrawer.new
-    @buttons = {
-      KB_DOWN: true,
-      KB_UP: true,
-      KB_RIGHT: true,
-      KB_LEFT: true,
-      KB_Z: true,
-      KB_X: true
-    }
     @input_state = :idle
     @input_states = {
       idle: new_input_state(IdleState),

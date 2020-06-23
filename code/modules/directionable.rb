@@ -60,6 +60,7 @@ module Directionable
   end
 
   def same_axis?(last_move, move)
-    (horizontal?(move) && horizontal?(last_move)) || (vertical?(move) && vertical?(last_move))
+    (horizontal?(move) && horizontal?(last_move)) ||
+      (vertical?(move) && vertical?(last_move))
   end
 end

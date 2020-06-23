@@ -6,12 +6,15 @@ class AniStators
   attr_accessor :animators
   attr_reader :ani_state, :dms
 
-  def build_animator(sprite:, state:, personal_dms: nil, frames_count: 1, times_per_frame: [0], index: 0, delta: 1, reverse: true)
+  def build_animator(sprite:, state:, **options)
+    options = default_options.merge(options)
     animator = Animator.new(
-      sprite: build_sprite(sprite, frames_count, index, delta),
-      times_per_frame: times_per_frame,
-      reverse: reverse,
-      dms: personal_dms || dms
+      sprite: build_sprite(
+        sprite, options[:frames_count], options[:index], options[:delta]
+      ),
+      times_per_frame: options[:times_per_frame],
+      reverse: options[:reverse],
+      dms: options[:personal_dms] || dms
     )
     animators[state] = animator
   end
@@ -56,5 +59,16 @@ class AniStators
       index += delta
     end
     result
+  end
+
+  def default_options
+    {
+      personal_dms: nil,
+      frames_count: 1,
+      times_per_frame: [0],
+      index: 0,
+      delta: 1,
+      reverse: true
+    }
   end
 end

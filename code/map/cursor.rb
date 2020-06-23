@@ -6,7 +6,8 @@ class Cursor
   include AniStatable
   include Dimensionable
 
-  PLAYER_CURSOR_SPRITE = Sprite.load_tiles('assets/map_ui/cursor.png', 32, 32, retro: true)
+  PLAYER_CURSOR_SPRITE =
+    Sprite.load_tiles('assets/map_ui/cursor.png', 32, 32, retro: true)
   CURSOR_DELAY = 100
   CURSOR_MOVE_VALUE = 1
   attr_reader :sprite, :buttons, :timeable, :wait, :ani_stators, :map

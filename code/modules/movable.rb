@@ -12,22 +12,34 @@ module Movable
   def finished_moving?
     return true if !move_object || !move_object.direction
 
-    value =  MOVE_VALUE / move_object.speed * move_object.step
+    value = MOVE_VALUE / move_object.speed * move_object.step
 
-    if value < MOVE_VALUE
-      move_value = 1.0 * GRID_VALUE[move_object.direction] / move_object.speed
-      self.dms = dms_after_move(dms, move: move_object.direction, move_value: move_value)
-      move_object.step += 1
-    end
+    increase_step(value)
 
     if value.to_i == MOVE_VALUE
-      dms.x_grid = dms.x_grid.round
-      dms.y_grid = dms.y_grid.round
-      move_object.direction = nil
-      move_object.step = 1
+      reset_move_object
       true
     else
       false
     end
+  end
+
+  private
+
+  def increase_step(value)
+    return unless value < MOVE_VALUE
+
+    move_value = 1.0 * GRID_VALUE[move_object.direction] / move_object.speed
+    self.dms = dms_after_move(
+      dms, move: move_object.direction, move_value: move_value
+    )
+    move_object.step += 1
+  end
+
+  def reset_move_object
+    dms.x_grid = dms.x_grid.round
+    dms.y_grid = dms.y_grid.round
+    move_object.direction = nil
+    move_object.step = 1
   end
 end

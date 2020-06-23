@@ -16,11 +16,7 @@ class HighlighterDrawer
       row.each_with_index do |movable_tile, j|
         next unless movable_tile
 
-        Highlighter.draw(
-          const: highlighter_const_name,
-          x_grid: map_sprite.x_grid + (j - move_value),
-          y_grid: map_sprite.y_grid + (i - move_value)
-        )
+        draw_highlighter(i, j)
       end
     end
   end
@@ -31,6 +27,14 @@ class HighlighterDrawer
   end
 
   private
+
+  def draw_highlighter(i, j)
+    Highlighter.draw(
+      const: highlighter_const_name,
+      x_grid: map_sprite.x_grid + (j - move_value),
+      y_grid: map_sprite.y_grid + (i - move_value)
+    )
+  end
 
   def highlighter_const_name
     "#{state.upcase}_BLUE_HIGHLIGHTER"

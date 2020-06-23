@@ -3,3 +3,9 @@ AllCops:
   TargetRubyVersion: 2.6
   Exclude:
     - 'test.rb'
+Naming/MethodParameterName:
+  MinNameLength: 1
+Metrics/MethodLength:
+  Max: 15
+Metrics/AbcSize:
+  Max: 16

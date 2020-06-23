@@ -1,14 +1,17 @@
 # frozen_string_literal: true
 
 require_relative '../modules/directionable'
+# rubocop:disable Metrics/ClassLength
 class Arrow
   include Directionable
-  ARROW_SPRITE = Sprite.load_tiles('assets/map_ui/MovementArrows_TRUE.png', 18, 18, retro: true)
+  ARROW_SPRITE =
+    Sprite.load_tiles(
+      'assets/map_ui/MovementArrows_TRUE.png', 18, 18, retro: true
+    )
   Part = Struct.new(:sprite, :direction, :is_corner)
 
   attr_accessor :body, :head, :last_move, :tail, :out_of_range, :head_dms
   attr_reader :body_sprite, :corner_sprite, :head_sprite, :tail_sprite
-
   def initialize
     clear
     build_sprites
@@ -16,20 +19,14 @@ class Arrow
 
   def setup_arrow(move:, dms:)
     self.head_dms = Dimensioner.new(x_grid: dms.x_grid, y_grid: dms.y_grid)
-
     if opposite_direction?(last_move, move)
-      !empty? ? assign_new_head : remove_arrow
-      self.last_move = head ? head.direction : nil
+      reduce_arrow
       return
     end
     self.tail = tail_sprite[move] unless tail
     self.head = Part.new(head_sprite[move], move)
 
-    if last_move == move
-      body << Part.new(body_sprite[last_move], last_move, false)
-    elsif last_move
-      body << Part.new(corner_sprite[corner_direction(last_move, move)], last_move, true)
-    end
+    add_part_to_body(move)
 
     self.last_move = move
   end
@@ -74,6 +71,30 @@ class Arrow
 
   private
 
+  def reduce_arrow
+    !empty? ? assign_new_head : remove_arrow
+    self.last_move = head ? head.direction : nil
+  end
+
+  def add_part_to_body(move)
+    if last_move == move
+      add_straight_part
+    elsif last_move
+      add_corner_part(move)
+    end
+  end
+
+  def add_straight_part
+    body << Part.new(body_sprite[last_move], last_move, false)
+  end
+
+  def add_corner_part(move)
+    body << Part.new(
+      corner_sprite[corner_direction(last_move, move)],
+      last_move, true
+    )
+  end
+
   def assign_new_head
     last_part = body.pop
     return unless last_part.is_corner
@@ -99,7 +120,11 @@ class Arrow
   end
 
   def draw_tail(x_grid, y_grid)
-    tail.draw(Util.get_real_pos(x_grid), Util.get_real_pos(y_grid), GC::Z_UNIT - 1)
+    tail.draw(
+      Util.get_real_pos(x_grid),
+      Util.get_real_pos(y_grid),
+      GC::Z_UNIT - 1
+    )
   end
 
   def draw_arrow_part(sprite, x, y)
@@ -107,19 +132,23 @@ class Arrow
   end
 
   def build_sprites
-    @body_sprite = {
-      left: ARROW_SPRITE[3],
-      right: ARROW_SPRITE[3],
-      up: ARROW_SPRITE[2],
-      down: ARROW_SPRITE[2]
+    @body_sprite = default_body_sprite
+    @head_sprite = default_head_sprite
+    @corner_sprite = default_corner_sprite
+    @tail_sprite = default_tail_sprite
+  end
+
+  def default_tail_sprite
+    {
+      right: ARROW_SPRITE[0],
+      left: ARROW_SPRITE[9],
+      up: ARROW_SPRITE[8],
+      down: ARROW_SPRITE[1]
     }
-    @head_sprite = {
-      right: ARROW_SPRITE[6],
-      down: ARROW_SPRITE[7],
-      up: ARROW_SPRITE[14],
-      left: ARROW_SPRITE[15]
-    }
-    @corner_sprite = {
+  end
+
+  def default_corner_sprite
+    {
       up_right: ARROW_SPRITE[4],
       left_down: ARROW_SPRITE[4],
       up_left: ARROW_SPRITE[5],
@@ -129,11 +158,24 @@ class Arrow
       down_left: ARROW_SPRITE[13],
       right_up: ARROW_SPRITE[13]
     }
-    @tail_sprite = {
-      right: ARROW_SPRITE[0],
-      left: ARROW_SPRITE[9],
-      up: ARROW_SPRITE[8],
-      down: ARROW_SPRITE[1]
+  end
+
+  def default_head_sprite
+    {
+      right: ARROW_SPRITE[6],
+      down: ARROW_SPRITE[7],
+      up: ARROW_SPRITE[14],
+      left: ARROW_SPRITE[15]
+    }
+  end
+
+  def default_body_sprite
+    {
+      left: ARROW_SPRITE[3],
+      right: ARROW_SPRITE[3],
+      up: ARROW_SPRITE[2],
+      down: ARROW_SPRITE[2]
     }
   end
 end
+# rubocop:enable Metrics/ClassLength

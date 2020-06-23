@@ -11,15 +11,14 @@ class ArrowDrawer
 
     arrow.draw(map_sprite.dms)
   end
+  # rubocop:disable Metrics/AbcSize
 
   def change_move_state(move:, cursor:, cursor_terrain:)
     cursor_dms = cursor.dms.dup
     move_cost = cursor_terrain.move_cost(movement.type)
 
-    map_sprite.ani_state = move if map_sprite.ani_state != move && arrow.empty?
-
+    change_sprite_direction(move)
     tile_route = route_to_tile(cursor_dms)
-
     return if cursor_oor?(cursor_dms, tile_route)
 
     move_cost = -move_cost if arrow.opposite_direction?(arrow.last_move, move)
@@ -30,15 +29,10 @@ class ArrowDrawer
       return if cursor_back_to_head?(cursor_dms)
     end
 
-    if out_of_move?(move_cost)
-      rebuild_arrow(tile_route, cursor_dms)
-      return
-    else
-      arrow.setup_arrow(move: move, dms: cursor_dms)
-    end
-    self.move_value -= move_cost
+    build_arrow(cursor_dms, move, move_cost, tile_route)
   end
 
+  # rubocop:enable all
   def bind_unit(
     unit:
   )
@@ -50,6 +44,20 @@ class ArrowDrawer
 
   private
 
+  def build_arrow(cursor_dms, move, move_cost, tile_route)
+    if out_of_move?(move_cost)
+      rebuild_arrow(tile_route, cursor_dms)
+      return
+    else
+      arrow.setup_arrow(move: move, dms: cursor_dms)
+    end
+    self.move_value -= move_cost
+  end
+
+  def change_sprite_direction(move)
+    map_sprite.ani_state = move if map_sprite.ani_state != move && arrow.empty?
+  end
+
   def rebuild_arrow(tile_route, cursor_dms)
     return false unless tile_route
 
@@ -58,9 +66,7 @@ class ArrowDrawer
       return false
     end
     arrow.build_arrow(
-      tile_route: tile_route,
-      center: movement.value,
-      dms: cursor_dms
+      tile_route: tile_route, center: movement.value, dms: cursor_dms
     )
     self.move_value = movement.value - tile_route[-1][-1]
   end
@@ -78,9 +84,15 @@ class ArrowDrawer
   end
 
   def route_to_tile(cursor_dms)
-    j = cursor_dms.y_grid + movement.value - map_sprite.y_grid
-    i = cursor_dms.x_grid + movement.value - map_sprite.x_grid
-    map_sprite.movable_tiles[j][i]
+    map_sprite.movable_tiles[tile_row(cursor_dms)][tile_col(cursor_dms)]
+  end
+
+  def tile_col(cursor_dms)
+    cursor_dms.x_grid + movement.value - map_sprite.x_grid
+  end
+
+  def tile_row(cursor_dms)
+    cursor_dms.y_grid + movement.value - map_sprite.y_grid
   end
 
   def cursor_oor?(_cursor_dms, tile_route)

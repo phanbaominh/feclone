@@ -43,6 +43,5 @@ module Buttonable
     else
       false
     end
-    # button == Gosu::KB_DOWN || button == Gosu::KB_UP || button == Gosu::KB_RIGHT || button == Gosu::KB_LEFT
   end
 end
