@@ -1,3 +1,4 @@
+# typed: true
 # frozen_string_literal: true
 
 require 'bundler/setup'
@@ -18,7 +19,6 @@ class Main < Gosu::Window
 
   def button_down(id)
     return unless Gosu::KB_T == id
-
     binding.pry
     p 'Resumed'
   end
