@@ -5,13 +5,12 @@ require_rel '../modules/dimensionable'
 require_rel '../modules/ani_statable'
 class Cursor
   include AniStatable
-  include Dimensionable
 
   PLAYER_CURSOR_SPRITE =
     Sprite.load_tiles('assets/map_ui/cursor.png', 32, 32, retro: true)
   CURSOR_DELAY = 100
   CURSOR_MOVE_VALUE = 1
-  attr_reader :sprite, :buttons, :timeable, :wait, :ani_stators, :map
+  attr_reader :sprite, :buttons, :timeable, :wait, :map
   attr_accessor :step, :sign, :direction
 
   def self.map_spr_dms(x: 0, y: 0)

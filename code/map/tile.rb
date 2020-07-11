@@ -16,7 +16,7 @@ class Tile
   }.freeze
   def initialize(
     unit: nil,
-    dimensioner: Dimensioner.new,
+    dimensioner:,
     terrain: :default
   )
     @dms = dimensioner

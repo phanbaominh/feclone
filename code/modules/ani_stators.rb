@@ -5,7 +5,7 @@ require_relative 'movable'
 class AniStators
   include Movable
   attr_accessor :animators
-  attr_reader :ani_state, :dms
+  attr_reader :ani_state
 
   def build_animator(sprite:, state:, **options)
     options = default_options.merge(options)

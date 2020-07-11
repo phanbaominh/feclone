@@ -8,6 +8,7 @@ Bundler.require(:default)
 require_rel 'code'
 
 class Main < Gosu::Window
+  extend T::Sig
   attr_reader :map_handler, :test
   def initialize
     super GC::GBA_SCREEN_WIDTH * GC::SCALING_FACTOR,

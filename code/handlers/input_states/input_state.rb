@@ -1,9 +1,9 @@
-# typed: false
+# typed: true
 # frozen_string_literal: true
 
 class InputState
   include Buttonable
-  attr_accessor :map, :cursor, :buttons,
+  attr_accessor :map, :cursor,
                 :next_state, :current_state, :arrow_drawer
   attr_reader :highlighter_drawer
   def initialize(map:, cursor:, arrow_drawer:, highlighter_drawer:)
@@ -29,6 +29,8 @@ class InputState
     highlighter_drawer.state = state
   end
 
+  def set_current_state; end
+  def change_cursor_state; end
   private
 
   def populate_buttons

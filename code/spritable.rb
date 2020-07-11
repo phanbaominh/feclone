@@ -1,8 +1,9 @@
-# typed: false
+# typed: true
 # frozen_string_literal: true
 
 require 'gosu'
 module Spritable
+  attr_accessor :dms
   def draw(
     x = nil, y = nil, z = nil,
     scale_x: GC::SCALING_FACTOR, scale_y: GC::SCALING_FACTOR
@@ -12,17 +13,18 @@ module Spritable
   end
 
   def height_grid
-    height / 16
+    T.let(height, Integer) / 16
   end
 
   def width_grid
-    width / 16
+    T.let(width, Integer) / 16
   end
 end
 
-class Gosu::Image
-  attr_accessor :dms
-  prepend Spritable
+module Gosu
+  class Image
+    prepend Spritable
+  end
 end
 
 Sprite = Gosu::Image

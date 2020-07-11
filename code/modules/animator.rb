@@ -5,7 +5,7 @@ require_relative 'timeable'
 require_relative 'movable'
 class Animator
   include Movable
-  attr_reader :sprite, :times_per_frame, :timeable, :reverse, :dms
+  attr_reader :sprite, :times_per_frame, :timeable, :reverse
   attr_accessor :delta, :current_frame
   def initialize(sprite: nil, times_per_frame: nil, reverse: false, dms: nil)
     @dms = dms

@@ -1,8 +1,7 @@
-# typed: false
+# typed: true
 # frozen_string_literal: true
 
-require_relative 'service'
-class PathFinder < Service
+class PathFinder
   attr_reader :terrains, :move_costs, :movement, :paths, :center
   def initialize(terrains, dimensioner, movement)
     @movement = movement
@@ -71,7 +70,7 @@ class PathFinder < Service
     end
 
     next_tiles = sorted_next_tiles_on_distance(arr, srcx, srcy, curx, cury)
-    result = nil
+    result = T.let(nil, T.untyped)
     next_tiles.each do |tile|
       current_move_cost = arr[curx][cury]
       arr[curx][cury] = nil

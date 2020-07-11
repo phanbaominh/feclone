@@ -5,7 +5,7 @@ class Dimensioner
   attr_accessor :x, :y, :z
   attr_reader :x_grid, :y_grid, :x_offset, :y_offset
   # rubocop:disable Metrics/AbcSize
-  def initialize(**options)
+  def initialize(options)
     x, y, z, x_grid, y_grid, x_offset, y_offset =
       default_options
       .merge(options)

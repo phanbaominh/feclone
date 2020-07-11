@@ -1,11 +1,12 @@
-# typed: false
+# typed: true
 # frozen_string_literal: true
 
 module Movable
   MOVE_VALUE = 1.0
   include Directionable
   Move = Struct.new(:direction, :speed, :step)
-  attr_accessor :move_object
+  attr_accessor :move_object, :dms
+
   def move(direction, speed)
     self.move_object = Move.new(direction, speed, 1)
   end

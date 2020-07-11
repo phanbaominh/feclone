@@ -1,12 +1,11 @@
-# typed: false
+# typed: true
 # frozen_string_literal: true
 
 class MapSprite
   include AniStatable
-  include Dimensionable
   attr_accessor :movable_tiles, :highlighter_state,
                 :highlighter_offset, :move_value
-  attr_reader :base_move_value, :sprite, :ani_stators, :arrow
+  attr_reader :base_move_value, :sprite, :arrow
   ANI_STATES = %i[left right down up idle wait hover].freeze
   def self.map_spr_dms(x: 0, y: 0)
     Dimensioner.new(
@@ -41,7 +40,7 @@ class MapSprite
 
   def setup_ani_stators
     @ani_stators = AniStators.new(ani_state: :idle, dms: dms)
-    moving = true
+    moving = T.let(true, T.any(TrueClass, FalseClass))
     ANI_STATES.each_with_index do |state, i|
       if !moving || state == :idle
         build_animator(state, index: i * 4)

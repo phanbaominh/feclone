@@ -1,7 +1,7 @@
 # typed: true
 # frozen_string_literal: true
 
-class TerrainDrawer < Service
+class TerrainDrawer
   attr_reader :sprite
   def initialize(sprite = nil)
     @sprite = sprite

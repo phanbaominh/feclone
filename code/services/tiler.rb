@@ -1,7 +1,7 @@
 # typed: true
 # frozen_string_literal: true
 
-class Tiler < Service
+class Tiler
   attr_reader :sprite, :width, :height, :grid
   def initialize(file_path = '', grid = false, width = 16, height = 16)
     @sprite = Magick::ImageList.new(file_path)

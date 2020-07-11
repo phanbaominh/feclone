@@ -7,7 +7,7 @@
 #
 #   https://github.com/sorbet/sorbet-typed/new/master?filename=lib/rmagick/all/rmagick.rbi
 #
-# rmagick-4.1.1
+# rmagick-4.1.2
 
 module Magick
   def colors; end

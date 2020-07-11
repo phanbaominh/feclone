@@ -14,3 +14,4 @@ gem 'rmagick'
 gem 'rubocop'
 gem 'sorbet'
 gem 'sorbet-runtime'
+gem 'rubocop-sorbet', require: false

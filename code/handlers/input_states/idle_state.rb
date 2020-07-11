@@ -17,7 +17,7 @@ class IdleState < InputState
     return unless (direction = movement_button?(button))
 
     change_cursor_state
-    cursor.ani_stators.move(direction, 4)
+    cursor.ani_stators.move(direction, 6)
   end
 
   def change_cursor_state(move_out: false)
@@ -27,9 +27,9 @@ class IdleState < InputState
       cursor.ani_state = :idle
     elsif unit && cursor.ani_state == :idle
       unit.add_moveable_tiles(
-        moveable_tiles: PathFinder.perform(
+        moveable_tiles: PathFinder.new(
           map.terrains, unit.dms, unit.movement
-        )
+        ).perform
       )
       cursor.ani_state = :hover
       highlighter_drawer.bind_unit(unit: unit)

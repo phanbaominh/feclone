@@ -7,7 +7,7 @@
 #
 #   https://github.com/sorbet/sorbet-typed/new/master?filename=lib/gosu/all/gosu.rbi
 #
-# gosu-0.15.1
+# gosu-0.15.2
 
 module Gosu
   def _release_all_openal_resources(*arg0); end

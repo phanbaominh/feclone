@@ -1,4 +1,4 @@
-# typed: false
+# typed: true
 # frozen_string_literal: true
 
 class Map
@@ -7,9 +7,9 @@ class Map
   def initialize(
     image_path:
   )
-    @terrains = TerrainDrawer.perform(
-      Tiler.perform(get_terrain_image_path(image_path), true)
-    )
+    @terrains = TerrainDrawer.new(
+      Tiler.new(get_terrain_image_path(image_path), true).perform
+    ).perform
     @sprite = Sprite.new(image_path, retro: true)
     @tiles = set_up_tiles
     test_tiles
@@ -33,7 +33,7 @@ class Map
   end
 
   def get_unit(x, y)
-    tile[y][x].unit
+    tiles[y][x].unit
   end
 
   def toogle_highlight(x_src: 0, y_src: 0, movement: nil); end

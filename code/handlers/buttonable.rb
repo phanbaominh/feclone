@@ -1,7 +1,9 @@
-# typed: false
+# typed: true
 # frozen_string_literal: true
 
 module Buttonable
+  include Kernel
+  attr_accessor :buttons
   def handle_buttons
     return post_handling unless pre_handling
 
