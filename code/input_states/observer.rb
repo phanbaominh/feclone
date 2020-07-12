@@ -10,7 +10,8 @@ module Observer
 
   sig { params(event: Symbol, payload: Emitter::Payload).void }
   def on_notify(event, payload: {})
-    send("on_#{event}", payload)
+    _event = "on_#{event}".to_sym
+    send(_event, payload) if respond_to?(_event)
   end
 
   sig { returns(Symbol) }

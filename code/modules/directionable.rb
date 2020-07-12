@@ -8,6 +8,7 @@ class DirectionEnum < T::Enum
     Right = new
     Up = new
     Down = new
+    None = new
   end
 
   sig { returns(Symbol) }

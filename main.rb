@@ -13,9 +13,10 @@ class Main < Gosu::Window
   def initialize
     super GC::GBA_SCREEN_WIDTH * GC::SCALING_FACTOR,
           GC::GBA_SCREEN_HEIGHT * GC::SCALING_FACTOR
-    map = Map.new(image_path: 'assets/map/test.png')
-    cursor = Cursor.new(map: map)
-    @map_handler = MapHandler.new(map: map, cursor: cursor)
+    # map = Map.new(image_path: 'assets/map/test.png')
+    # cursor = Cursor.new(map: map)
+    # @map_handler = MapHandler.new(map: map, cursor: cursor)
+    @map_handler = StateManager.new
   end
 
   def button_down(id)
@@ -29,7 +30,7 @@ class Main < Gosu::Window
   end
 
   def draw
-    map_handler.draw
+    StateManager.draw
   end
 end
 

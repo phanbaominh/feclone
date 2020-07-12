@@ -13,8 +13,24 @@ class ArrowObserver
   end
 
   sig { params(payload: Emitter::Payload).void }
-  def on_unit_selected(payload)
+  def on_idle_unit_selected(payload)
     unit = T.let(payload.fetch(:unit), Unit)
     arrow_drawer.bind_unit(unit: unit)
+  end
+
+  sig { params(payload: Emitter::Payload).void }
+  def on_selected_cursor_moved(payload)
+    arrow_drawer.change_move_state(
+      move: payload.fetch(:direction),
+      cursor: StateManager::Cursor,
+      cursor_terrain: Terrain.get_terrain(
+        name: StateManager::Map.terrains[StateManager::Cursor.y_grid][StateManager::Cursor.x_grid]
+      )
+    )
+  end
+
+  sig { params(payload: Emitter::Payload).void }
+  def on_selected_unselect_unit(payload = {})
+    arrow_drawer.arrow.clear
   end
 end

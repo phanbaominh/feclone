@@ -5,8 +5,6 @@ class HighlighterObserver
   extend T::Sig
   include Observer
 
-  private
-
   sig { returns(HighlighterDrawer) }
   attr_reader :highlighter_drawer
   sig { params(highlighter_drawer: HighlighterDrawer).void }
@@ -27,7 +25,12 @@ class HighlighterObserver
   end
 
   sig { params(payload: Emitter::Payload).void }
-  def on_unit_selected(payload = {})
+  def on_idle_unit_selected(payload = {})
     highlighter_drawer.state = :active
+  end
+
+  sig { params(payload: Emitter::Payload).void }
+  def on_selected_unselect_unit(payload = {})
+    highlighter_drawer.state = :hover
   end
 end
