@@ -36,13 +36,13 @@ module Buttonable
   def movement_button?(button)
     case button
     when Gosu::KB_DOWN
-      :down
+      DirectionEnum::Down
     when Gosu::KB_UP
-      :up
+      DirectionEnum::Up
     when Gosu::KB_RIGHT
-      :right
+      DirectionEnum::Right
     when Gosu::KB_LEFT
-      :left
+      DirectionEnum::Left
     else
       false
     end

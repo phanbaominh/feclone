@@ -22,7 +22,7 @@ class ArrowDrawer
     tile_route = route_to_tile(cursor_dms)
     return if cursor_oor?(cursor_dms, tile_route)
 
-    move_cost = -move_cost if arrow.opposite_direction?(arrow.last_move, move)
+    move_cost = -move_cost if Directionable.opposite_direction?(arrow.last_move, move)
 
     if cursor_in_range_after_oor?
       arrow.out_of_range = false
@@ -56,7 +56,7 @@ class ArrowDrawer
   end
 
   def change_sprite_direction(move)
-    map_sprite.ani_state = move if map_sprite.ani_state != move && arrow.empty?
+    map_sprite.ani_state = move.to_sym if map_sprite.ani_state != move.to_sym && arrow.empty?
   end
 
   def rebuild_arrow(tile_route, cursor_dms)

@@ -3,7 +3,6 @@
 
 module Movable
   MOVE_VALUE = 1.0
-  include Directionable
   Move = Struct.new(:direction, :speed, :step)
   attr_accessor :move_object, :dms
 
@@ -31,8 +30,8 @@ module Movable
   def increase_step(value)
     return unless value < MOVE_VALUE
 
-    move_value = 1.0 * GRID_VALUE[move_object.direction] / move_object.speed
-    self.dms = dms_after_move(
+    move_value = 1.0 * Directionable::GRID_VALUE[move_object.direction.to_sym] / move_object.speed
+    self.dms = Directionable.dms_after_move(
       dms, move: move_object.direction, move_value: move_value
     )
     move_object.step += 1

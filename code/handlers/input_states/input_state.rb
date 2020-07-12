@@ -3,6 +3,7 @@
 
 class InputState
   include Buttonable
+  # include Emitter
   attr_accessor :map, :cursor,
                 :next_state, :current_state, :arrow_drawer
   attr_reader :highlighter_drawer

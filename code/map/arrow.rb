@@ -4,7 +4,6 @@
 require_relative '../modules/directionable'
 # rubocop:disable Metrics/ClassLength
 class Arrow
-  include Directionable
   ARROW_SPRITE =
     Sprite.load_tiles(
       'assets/map_ui/MovementArrows_TRUE.png', 18, 18, retro: true
@@ -20,12 +19,12 @@ class Arrow
 
   def setup_arrow(move:, dms:)
     self.head_dms = Dimensioner.new(x_grid: dms.x_grid, y_grid: dms.y_grid)
-    if opposite_direction?(last_move, move)
+    if Directionable.opposite_direction?(last_move, move)
       reduce_arrow
       return
     end
-    self.tail = tail_sprite[move] unless tail
-    self.head = Part.new(head_sprite[move], move)
+    self.tail = tail_sprite[move.to_sym] unless tail
+    self.head = Part.new(head_sprite[move.to_sym], move)
 
     add_part_to_body(move)
 
@@ -45,7 +44,7 @@ class Arrow
     prev_dim = Dimensioner.new(x_grid: center, y_grid: center)
     tile_route.each do |tile|
       tile_dim = Dimensioner.new(x_grid: tile[1], y_grid: tile[0])
-      move = direction!(tile_dim, prev_dim, dms: dms)
+      move = Directionable.direction!(tile_dim, prev_dim, dms: dms)
       setup_arrow(move: move, dms: dms)
       prev_dim = tile_dim
     end
@@ -56,7 +55,7 @@ class Arrow
     dms = dimensioner.dup
     draw_tail(dms.x_grid, dms.y_grid) if tail
     arrow_parts.each do |part|
-      dms = dms_after_move(dms, move: part.direction)
+      dms = Directionable.dms_after_move(dms, move: part.direction)
       draw_arrow_part(part.sprite, dms.x, dms.y)
     end
   end
@@ -86,7 +85,7 @@ class Arrow
   end
 
   def add_straight_part
-    body << Part.new(body_sprite[last_move], last_move, false)
+    body << Part.new(body_sprite[last_move.to_sym], last_move, false)
   end
 
   def add_corner_part(move)
@@ -100,7 +99,7 @@ class Arrow
     last_part = body.pop
     return unless last_part.is_corner
 
-    self.head = Part.new(head_sprite[last_part.direction], last_part.direction)
+    self.head = Part.new(head_sprite[last_part.direction.to_sym], last_part.direction)
   end
 
   def remove_arrow
@@ -109,7 +108,7 @@ class Arrow
   end
 
   def corner_direction(last_move, move)
-    "#{last_move}_#{move}".to_sym
+    "#{last_move.serialize}_#{move.serialize}".to_sym
   end
 
   def arrow_exist?
