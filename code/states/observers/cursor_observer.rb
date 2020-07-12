@@ -23,13 +23,13 @@ class CursorObserver
 
   sig { params(payload: Emitter::Payload, event: Symbol).void }
   def move_cursor(payload, event)
-
+    direction = T.let(payload.fetch(:direction), DirectionEnum)
+    return unless StateManager::CURSOR.responsive? || direction == DirectionEnum::None
 
     prev_dms = cursor.dms.clone
-    direction = T.let(payload.fetch(:direction), DirectionEnum)
     if direction != DirectionEnum::None
       cursor.dms = Directionable.dms_after_move(cursor.dms, move: direction)
-      cursor.ani_stators.move(direction, 6)
+      cursor.ani_stators.set_move(direction, 6)
     end
     # p prev_dms
     # p cursor.dms

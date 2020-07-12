@@ -66,6 +66,17 @@ module Directionable
       )
     end
 
+    def dms_after_move!(dms, move:, move_value:)
+      delta_x = 0
+      delta_y = 0
+      move_value ||= GRID_VALUE[move.to_sym]
+      delta_x = move_value if horizontal?(move)
+      delta_y = move_value if vertical?(move)
+
+      dms.x_grid += delta_x
+      dms.y_grid += delta_y
+    end
+
     def horizontal?(move)
       return unless move
 

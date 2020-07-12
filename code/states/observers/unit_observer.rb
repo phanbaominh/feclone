@@ -6,7 +6,7 @@ class UnitObserver
   include Observer
   include Emitter
 
-  sig { returns(Unit) }
+  sig { returns(T.nilable(Unit)) }
   attr_reader :unit
 
   def initialize
@@ -20,7 +20,7 @@ class UnitObserver
 
   sig { params(payload: Emitter::Payload).void }
   def on_selected_unselect_unit(payload = {})
-    unit.change_sprite_state(state: :hover)
+    T.must(unit).change_sprite_state(state: :hover)
     emit(:selected_unit_unselected, payload: { unit: unit })
     @unit = nil
   end

@@ -36,7 +36,7 @@ class MapObserver
 
   sig { params(payload: Emitter::Payload).void }
   def on_idle_cursor_moved(payload)
-    cursor = StateManager::Cursor
+    cursor = StateManager::CURSOR
     unit = map.unit_present?(cursor.x_grid, cursor.y_grid)
     if unit && cursor.ani_state == :idle
       hover_unit(unit)
@@ -47,7 +47,7 @@ class MapObserver
 
   sig { params(payload: Emitter::Payload).void }
   def on_idle_select_unit(payload = {})
-    cursor = StateManager::Cursor
+    cursor = StateManager::CURSOR
     unit = map.unit_present?(cursor.x_grid, cursor.y_grid)
     return unless unit
 

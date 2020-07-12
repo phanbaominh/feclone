@@ -3,6 +3,7 @@
 
 require_relative 'movable'
 class AniStators
+  extend T::Sig
   include Movable
   attr_accessor :animators
   attr_reader :ani_state
@@ -40,11 +41,16 @@ class AniStators
     animators.values.each { |animator| animator.dms = value }
   end
 
-  def move(direction, speed)
+  def set_move(direction, speed)
     self.move_object = Move.new(direction, speed, 1)
     animators.values.each do |animator|
       animator.move_object = move_object
     end
+  end
+
+  sig { returns(T::Boolean) }
+  def finished_moving?
+    cur_animator.finished_moving?
   end
 
   private

@@ -1,8 +1,8 @@
 # typed: true
 # frozen_string_literal: true
 
-class InputState1
-  include Buttonable1
+class InputState
+  include Buttonable
   include Emitter
   def initialize
     populate_buttons

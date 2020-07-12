@@ -8,21 +8,21 @@ module Emitter
   Observers = T.type_alias { T.nilable(T::Hash[Symbol, Observer]) }
   EventQueue = T.let([], T::Array[Symbol])
   PayloadQueue = T.let([], T::Array[Payload])
-  @finished = true
-  def self.finished=(value)
-    @finished = value
+
+  @finished = T.let(true, T::Boolean)
+  class << self
+    extend T::Sig
+    sig { returns(T::Boolean) }
+    attr_accessor :finished
   end
 
-  def self.finished
-    @finished
-  end
   sig { returns(Observers) }
   attr_reader :obs
 
   sig { params(ob: Observer).void }
   def add_ob(ob)
     @obs = T.let({}, Observers) unless obs
-    obs[ob.ob_name] = ob
+    T.must(obs)[ob.ob_name] = ob
   end
 
   sig { params(_obs: T::Array[Observer]).void }
@@ -32,7 +32,7 @@ module Emitter
 
   sig { params(ob: Observer).void }
   def remove_ob(ob)
-    obs.delete(ob.ob_name)
+    T.must(obs).delete(ob.ob_name)
   end
 
   sig { params(event: Symbol, payload: Payload).void }
@@ -45,9 +45,9 @@ module Emitter
       Emitter.finished = false
       until EventQueue.empty?
 
-        _event = EventQueue.shift
-        _payload = PayloadQueue.shift
-        obs.each { |_, ob| ob.on_notify(_event, payload: _payload) }
+        _event = T.must(EventQueue.shift)
+        _payload = T.must(PayloadQueue.shift)
+        T.must(obs).each { |_, ob| ob.on_notify(_event, payload: _payload) }
       end
       Emitter.finished = true
     end

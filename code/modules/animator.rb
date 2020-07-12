@@ -15,6 +15,7 @@ class Animator
     @current_frame = 0
     @reverse = reverse
     @delta = 1
+    @move_finished = true
   end
 
   def current_frame_sprite
@@ -31,6 +32,7 @@ class Animator
   end
 
   def draw
+    move
     current_frame_sprite.draw
   end
 

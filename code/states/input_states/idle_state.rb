@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 
 require_relative 'input_state'
-class IdleState1 < InputState1
+class IdleState < InputState
   def pre_press(button)
     return unless (direction = movement_button?(button))
     emit(:idle_move_cursor, payload: { direction: direction })

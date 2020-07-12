@@ -4,13 +4,17 @@
 require_rel '../modules/dimensionable'
 require_rel '../modules/ani_statable'
 class Cursor
+  extend T::Sig
   include AniStatable
 
   PLAYER_CURSOR_SPRITE =
     Sprite.load_tiles('assets/map_ui/cursor.png', 32, 32, retro: true)
   CURSOR_DELAY = 100
   CURSOR_MOVE_VALUE = 1
-  attr_reader :sprite, :buttons, :timeable, :wait, :map
+
+  sig { returns(Timeable) }
+  attr_reader :timeable
+  attr_reader :sprite, :buttons, :wait, :map
   attr_accessor :step, :sign, :direction
 
   def self.map_spr_dms(x: 0, y: 0)
@@ -30,8 +34,13 @@ class Cursor
   )
     @map = map
     @dms = dimensioner
-    @timeable = Timeable.new(last_time: Gosu.milliseconds,
-                             wait: CURSOR_DELAY)
+    @timeable = T.let(
+      Timeable.new(
+        last_time: Gosu.milliseconds,
+        wait: CURSOR_DELAY
+      ),
+      Timeable
+    )
     @sprite = sprite
     @step = 1
     @direction = nil
@@ -39,6 +48,7 @@ class Cursor
     setup_ani_stators
   end
 
+  sig { returns(T::Boolean) }
   def debounced?
     !timeable.update_time?
   end
@@ -48,8 +58,14 @@ class Cursor
     self.sign = sign
   end
 
+  sig { void }
   def draw
     ani_stators.draw
+  end
+
+  sig { returns(T::Boolean) }
+  def responsive?
+    T.must(ani_stators.finished_moving? && !debounced?)
   end
 
   private

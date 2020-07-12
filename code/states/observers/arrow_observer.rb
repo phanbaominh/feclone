@@ -22,9 +22,9 @@ class ArrowObserver
   def on_selected_cursor_moved(payload)
     arrow_drawer.change_move_state(
       move: payload.fetch(:direction),
-      cursor: StateManager::Cursor,
+      cursor: StateManager::CURSOR,
       cursor_terrain: Terrain.get_terrain(
-        name: StateManager::Map.terrains[StateManager::Cursor.y_grid][StateManager::Cursor.x_grid]
+        name: StateManager::MAP.terrains[StateManager::CURSOR.y_grid][StateManager::CURSOR.x_grid]
       )
     )
   end
